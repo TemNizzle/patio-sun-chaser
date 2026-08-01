@@ -30,6 +30,22 @@ npm run build                # production build (SSG for all patio pages)
 
 The list view works without a Mapbox token; only the map needs one.
 
+## Deploying to Vercel
+
+This is a zero-config Next.js app — Vercel builds it as-is.
+
+1. At [vercel.com/new](https://vercel.com/new), **Import** the
+   `patio-sun-chaser` GitHub repo (authorize the Vercel GitHub app if prompted).
+2. Vercel auto-detects Next.js; no build settings to change. Click **Deploy**.
+3. Add environment variables (Project → Settings → Environment Variables):
+   - `NEXT_PUBLIC_MAPBOX_TOKEN` — a free [Mapbox token](https://account.mapbox.com/access-tokens/), required for the map.
+   - `NEXT_PUBLIC_SITE_URL` — *(optional)* your production URL once you have a
+     custom domain; otherwise the Vercel URL is used automatically for metadata.
+4. Redeploy after adding the token (Deployments → ⋯ → Redeploy) so the map picks
+   it up.
+
+Every push to `main` then auto-deploys, with preview deployments per branch/PR.
+
 ## Project structure
 
 | Path                          | Purpose                                             |

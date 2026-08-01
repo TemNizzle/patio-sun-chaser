@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://patiosunchaser.com"),
+  metadataBase: getSiteUrl(),
   title: {
     default: "Patio Sun Chaser — Find sunny patios in Toronto",
     template: "%s | Patio Sun Chaser",
