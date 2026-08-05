@@ -35,10 +35,13 @@ export function HomeView({ patios }: { patios: Patio[] }) {
       list = list.filter((p) => p.neighborhood === filters.neighborhood);
     }
     if (filters.sunnyOnly) {
-      list = list.filter((p) => estimateExposure(p, at).status === "sunny");
+      list = list.filter((p) => {
+        const status = estimateExposure(p, now).status;
+        return status === "sunny" || status === "partial";
+      });
     }
     return sortPatios(list, at);
-  }, [patios, filters, at]);
+  }, [patios, filters, at, now]);
 
   const selected = patios.find((p) => p.id === selectedId);
 
