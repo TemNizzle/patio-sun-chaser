@@ -8,11 +8,18 @@ import { AdSlot } from "@/components/Ads/AdSlot";
 interface Props {
   patios: Patio[];
   at: Date;
+  cloudCoverPercent?: number;
   selectedId?: string;
   onSelect?: (id: string) => void;
 }
 
-export function PatioList({ patios, at, selectedId, onSelect }: Props) {
+export function PatioList({
+  patios,
+  at,
+  cloudCoverPercent,
+  selectedId,
+  onSelect,
+}: Props) {
   if (patios.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border bg-surface-muted p-8 text-center text-sm text-muted">
@@ -29,6 +36,7 @@ export function PatioList({ patios, at, selectedId, onSelect }: Props) {
           <PatioCard
             patio={patio}
             at={at}
+            cloudCoverPercent={cloudCoverPercent}
             selected={patio.id === selectedId}
             onSelect={onSelect}
           />

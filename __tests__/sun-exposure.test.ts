@@ -86,4 +86,36 @@ describe("estimateExposure", () => {
     expect(estimateExposure(patio, twoPm).status).toBe("sunny");
     expect(estimateExposure(patio, tenAm).status).toBe("shaded");
   });
+
+  describe("cloud cover adjustment", () => {
+    const patio = makePatio({
+      exposure: { obstructionFactor: 0.9, orientation: "OPEN_SKY" },
+    });
+
+    it("leaves a sunny result unchanged under clear skies (<30%)", () => {
+      const result = estimateExposure(patio, solarNoon, 10);
+      expect(result.status).toBe("sunny");
+    });
+
+    it("downgrades sunny to partial when 30-70% cloud cover", () => {
+      const result = estimateExposure(patio, solarNoon, 50);
+      expect(result.status).toBe("partial");
+    });
+
+    it("forces shaded when cloud cover is over 70%, regardless of sun position", () => {
+      const result = estimateExposure(patio, solarNoon, 90);
+      expect(result.status).toBe("shaded");
+    });
+
+    it("never overrides closed-sky at night", () => {
+      const midnight = new Date("2025-06-22T04:00:00Z");
+      const result = estimateExposure(patio, midnight, 90);
+      expect(result.status).toBe("closed-sky");
+    });
+
+    it("is ignored entirely when cloudCoverPercent is not passed", () => {
+      const result = estimateExposure(patio, solarNoon);
+      expect(result.status).toBe("sunny");
+    });
+  });
 });

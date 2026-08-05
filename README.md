@@ -17,6 +17,12 @@ sun will be there, so groups can plan their sun-chasing outings.
   an explicit placeholder for a future building-shadow model driven by City of
   Toronto open data — see [`lib/sun-exposure.ts`](lib/sun-exposure.ts) and
   [`data/README.md`](data/README.md).
+- **Live weather**: current Toronto cloud cover from [Open-Meteo](https://open-meteo.com/)
+  (free, no API key) discounts the "sunny now" estimate — heavy cloud cover
+  forces a patio to "shaded" even if the sun is geometrically in the right
+  spot. Only applies to "now"; previewing another time on the slider falls
+  back to the pure sun-position model. See [`lib/weather.ts`](lib/weather.ts).
+  The weather button (top-right of the map) shows the current reading.
 
 ## Getting started
 

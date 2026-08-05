@@ -19,6 +19,7 @@ const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 interface Props {
   patios: Patio[];
   at: Date;
+  cloudCoverPercent?: number;
   selectedId?: string;
   onSelect: (id: string) => void;
   userLocation: { lat: number; lng: number } | null;
@@ -39,6 +40,7 @@ function dotEl(color: string, ring: boolean): HTMLDivElement {
 export function PatioMap({
   patios,
   at,
+  cloudCoverPercent,
   selectedId,
   onSelect,
   userLocation,
@@ -109,7 +111,7 @@ export function PatioMap({
     const seen = new Set<string>();
     for (const patio of patios) {
       seen.add(patio.id);
-      const status = estimateExposure(patio, at).status;
+      const status = estimateExposure(patio, at, cloudCoverPercent).status;
       const color = STATUS_COLOR[status];
       const ring = patio.sponsored || patio.id === selectedId;
 
@@ -143,7 +145,7 @@ export function PatioMap({
   useEffect(() => {
     renderMarkers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [patios, at, selectedId]);
+  }, [patios, at, cloudCoverPercent, selectedId]);
 
   // User location marker.
   useEffect(() => {

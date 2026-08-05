@@ -9,12 +9,19 @@ import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
 interface Props {
   patio: Patio;
   at: Date;
+  cloudCoverPercent?: number;
   selected?: boolean;
   onSelect?: (id: string) => void;
 }
 
-export function PatioCard({ patio, at, selected, onSelect }: Props) {
-  const exposure = estimateExposure(patio, at);
+export function PatioCard({
+  patio,
+  at,
+  cloudCoverPercent,
+  selected,
+  onSelect,
+}: Props) {
+  const exposure = estimateExposure(patio, at, cloudCoverPercent);
   const meta = STATUS_META[exposure.status];
   const hours = formatHours(patio.hours);
   const sunWindow = formatSunWindow(

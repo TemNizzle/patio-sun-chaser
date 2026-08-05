@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Patio } from "@/lib/types";
+import type { WeatherSnapshot } from "@/lib/weather";
 import { estimateExposure } from "@/lib/sun-exposure";
 import { sortPatios, getNeighborhoods } from "@/lib/patios";
 import { PatioMap } from "@/components/Map/PatioMap";
@@ -12,8 +13,15 @@ import { PatioList } from "@/components/List/PatioList";
 import { PatioFilters, type Filters } from "@/components/List/PatioFilters";
 import { SunTimeControl } from "@/components/DateTimePicker/SunTimeControl";
 import { AdSlot } from "@/components/Ads/AdSlot";
+import { WeatherButton } from "@/components/Weather/WeatherButton";
 
-export function HomeView({ patios }: { patios: Patio[] }) {
+export function HomeView({
+  patios,
+  weather,
+}: {
+  patios: Patio[];
+  weather: WeatherSnapshot | null;
+}) {
   const [now, setNow] = useState(() => new Date());
   const [previewAt, setPreviewAt] = useState<Date | null>(null);
   const [filters, setFilters] = useState<Filters>({
@@ -29,6 +37,11 @@ export function HomeView({ patios }: { patios: Patio[] }) {
   const at = previewAt ?? now;
   const neighborhoods = useMemo(() => getNeighborhoods(patios), [patios]);
 
+  // Live weather only applies to "now" — previewing another time falls back
+  // to the pure sun-position model (see lib/weather.ts / lib/sun-exposure.ts).
+  const cloudCoverPercent =
+    previewAt === null ? weather?.cloudCoverPercent : undefined;
+
   const visible = useMemo(() => {
     let list = patios;
     if (filters.neighborhood) {
@@ -36,12 +49,13 @@ export function HomeView({ patios }: { patios: Patio[] }) {
     }
     if (filters.sunnyOnly) {
       list = list.filter((p) => {
-        const status = estimateExposure(p, now).status;
+        const status = estimateExposure(p, now, weather?.cloudCoverPercent)
+          .status;
         return status === "sunny" || status === "partial";
       });
     }
-    return sortPatios(list, at);
-  }, [patios, filters, at, now]);
+    return sortPatios(list, at, cloudCoverPercent);
+  }, [patios, filters, at, now, weather, cloudCoverPercent]);
 
   const selected = patios.find((p) => p.id === selectedId);
 
@@ -65,6 +79,7 @@ export function HomeView({ patios }: { patios: Patio[] }) {
         <PatioMap
           patios={visible}
           at={at}
+          cloudCoverPercent={cloudCoverPercent}
           selectedId={selectedId}
           onSelect={setSelectedId}
           userLocation={userLocation}
@@ -76,6 +91,7 @@ export function HomeView({ patios }: { patios: Patio[] }) {
         >
           📍 Find me
         </button>
+        <WeatherButton weather={weather} />
         {selected && (
           <PatioDetailCard
             patio={selected}
@@ -113,6 +129,7 @@ export function HomeView({ patios }: { patios: Patio[] }) {
           <PatioList
             patios={visible}
             at={at}
+            cloudCoverPercent={cloudCoverPercent}
             selectedId={selectedId}
             onSelect={setSelectedId}
           />

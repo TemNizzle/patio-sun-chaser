@@ -18,10 +18,15 @@ export function getNeighborhoods(patios: Patio[]): string[] {
 /**
  * Default ordering: sponsored patios first (by sponsorRank), then everyone
  * else by current sun confidence, then alphabetically. Pure and testable.
+ * `cloudCoverPercent` is an optional live-weather adjustment (see lib/weather.ts).
  */
-export function sortPatios(patios: Patio[], at: Date): Patio[] {
+export function sortPatios(
+  patios: Patio[],
+  at: Date,
+  cloudCoverPercent?: number
+): Patio[] {
   const confidenceNow = (p: Patio): number => {
-    const r = estimateExposure(p, at);
+    const r = estimateExposure(p, at, cloudCoverPercent);
     return r.status === "sunny" || r.status === "partial" ? r.confidence : 0;
   };
 

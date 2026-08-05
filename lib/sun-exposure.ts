@@ -76,8 +76,55 @@ function parseHour(hhmm: string): number {
  * Combines the real sun position with manually-curated exposure data. No
  * building-footprint/height data is used here; a future model would expose
  * the same ExposureResult shape and replace this function wholesale.
+ *
+ * `cloudCoverPercent` (0-100) is an optional real-time weather adjustment —
+ * only pass it when `date` represents "now" (see lib/weather.ts). It never
+ * changes the underlying sun-position math, only discounts the result.
  */
-export function estimateExposure(patio: Patio, date: Date): ExposureResult {
+export function estimateExposure(
+  patio: Patio,
+  date: Date,
+  cloudCoverPercent?: number
+): ExposureResult {
+  const base = estimateSunPositionExposure(patio, date);
+  if (cloudCoverPercent === undefined || base.status === "closed-sky") {
+    return base;
+  }
+  return applyCloudCover(base, cloudCoverPercent);
+}
+
+const CLOUD_OVERCAST_THRESHOLD = 70;
+const CLOUD_PARTLY_CLOUDY_THRESHOLD = 30;
+
+/** Discounts a sun-position result using live cloud cover (0-100%). */
+function applyCloudCover(
+  result: ExposureResult,
+  cloudCoverPercent: number
+): ExposureResult {
+  const pct = Math.round(cloudCoverPercent);
+
+  if (cloudCoverPercent > CLOUD_OVERCAST_THRESHOLD) {
+    if (result.status === "shaded") return result;
+    return {
+      status: "shaded",
+      confidence: Math.min(result.confidence, 0.7),
+      reason: `${result.reason} Overcast (${pct}% cloud cover) blocks direct sun.`,
+    };
+  }
+
+  if (cloudCoverPercent >= CLOUD_PARTLY_CLOUDY_THRESHOLD) {
+    if (result.status !== "sunny") return result;
+    return {
+      status: "partial",
+      confidence: result.confidence * 0.7,
+      reason: `${result.reason} Partly cloudy (${pct}% cloud cover).`,
+    };
+  }
+
+  return result;
+}
+
+function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
   const snap = getSunSnapshot(patio.lat, patio.lng, date);
 
   if (!snap.isDaytime) {
