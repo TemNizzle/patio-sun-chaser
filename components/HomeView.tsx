@@ -98,7 +98,12 @@ export function HomeView({ patios }: { patios: Patio[] }) {
           <PatioFilters
             neighborhoods={neighborhoods}
             filters={filters}
-            onChange={setFilters}
+            onChange={(next) => {
+              if (next.sunnyOnly && !filters.sunnyOnly) {
+                setPreviewAt(null);
+              }
+              setFilters(next);
+            }}
             resultCount={visible.length}
           />
         </div>
