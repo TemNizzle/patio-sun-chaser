@@ -160,7 +160,7 @@ export function PatioMap({
         .setLngLat([userLocation.lng, userLocation.lat])
         .addTo(map);
     }
-    map.easeTo({ center: [userLocation.lng, userLocation.lat], zoom: 15, duration: 600 });
+    map.easeTo({ center: [userLocation.lng, userLocation.lat], zoom: 16, duration: 600 });
   }, [userLocation]);
 
   // Pan to selected patio.
