@@ -1,4 +1,5 @@
 import type { SunStatus } from "@/lib/sun-exposure";
+import type { ExposureProfile } from "@/lib/types";
 
 export const STATUS_META: Record<
   SunStatus,
@@ -25,4 +26,28 @@ export function mapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     address
   )}`;
+}
+
+/** Detail-page disclaimer/confirmation copy for an exposure profile's data source. */
+export function exposureSourceNote(exposure: ExposureProfile): string | null {
+  const verifiedDate = exposure.verifiedAt
+    ? new Date(exposure.verifiedAt).toLocaleDateString("en-CA", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : null;
+
+  switch (exposure.exposureSource) {
+    case "mockdata-csv":
+      return "Sun times shown are placeholder estimates from seed data, not yet verified against real sun-angle and building-shadow modeling.";
+    case "phone-verified":
+      return verifiedDate
+        ? `Sun exposure confirmed directly with staff on ${verifiedDate}.`
+        : "Sun exposure confirmed directly with staff.";
+    case "satellite-estimated":
+      return "Sun exposure estimated from satellite imagery, not yet confirmed with staff.";
+    case "manual":
+      return null;
+  }
 }

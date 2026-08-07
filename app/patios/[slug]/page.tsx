@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPatios, getPatioBySlug } from "@/lib/patios";
-import { formatHours, formatSunWindow, mapsUrl } from "@/lib/format";
+import { formatHours, formatSunWindow, mapsUrl, exposureSourceNote } from "@/lib/format";
 import { PatioExposurePanel } from "@/components/PatioExposurePanel";
 import { AdSlot } from "@/components/Ads/AdSlot";
 import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
@@ -40,6 +40,7 @@ export default async function PatioPage({
     patio.exposure.sunStartsAt,
     patio.exposure.sunEndsAt
   );
+  const sourceNote = exposureSourceNote(patio.exposure);
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
@@ -85,12 +86,7 @@ export default async function PatioPage({
         ➤ Open in Maps
       </a>
 
-      {patio.exposure.isMockExposure && (
-        <p className="mt-4 text-xs text-muted">
-          Sun times shown are placeholder estimates from seed data, not yet
-          verified against real sun-angle and building-shadow modeling.
-        </p>
-      )}
+      {sourceNote && <p className="mt-4 text-xs text-muted">{sourceNote}</p>}
 
       <div className="mt-8">
         <AdSlot placement="detail-sidebar" />

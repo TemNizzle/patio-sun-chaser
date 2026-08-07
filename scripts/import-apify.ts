@@ -65,7 +65,11 @@ export function mapApifyPlace(place: ApifyPlace): Patio | null {
     website: place.website,
     photoUrl: place.imageUrl,
     // Not present in scraped data — safe defaults pending manual curation.
-    exposure: { obstructionFactor: 0.5, notes: "NEEDS EXPOSURE REVIEW" },
+    exposure: {
+      obstructionFactor: 0.5,
+      notes: "NEEDS EXPOSURE REVIEW",
+      exposureSource: "manual",
+    },
     sponsored: false,
     source: "apify",
   };

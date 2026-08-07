@@ -9,6 +9,17 @@ export type Orientation =
   | "NW"
   | "OPEN_SKY";
 
+/**
+ * Provenance of an ExposureProfile's data — drives how much estimateExposure()
+ * trusts it (see CONFIDENCE_BY_SOURCE in lib/sun-exposure.ts) and what
+ * disclaimer (if any) the detail page shows.
+ */
+export type ExposureSource =
+  | "mockdata-csv" // known-fake synthetic window from the scraped CSV
+  | "manual" // hand-set default guess, no real verification
+  | "satellite-estimated" // orientation eyeballed from satellite/Street View
+  | "phone-verified"; // confirmed directly with staff on a call
+
 export interface ExposureProfile {
   /** Which direction has open sky. Only used as a fallback when no manual sun window is set. */
   orientation?: Orientation;
@@ -21,8 +32,10 @@ export interface ExposureProfile {
   notes?: string;
   /** Future swap-point flag: presence signals a precise shadow model should be used instead. */
   preciseModelId?: string;
-  /** True when sunStartsAt/sunEndsAt came from mockdata.csv's synthetic placeholder values. */
-  isMockExposure?: boolean;
+  /** Where this exposure data came from; determines confidence and detail-page disclaimer. */
+  exposureSource: ExposureSource;
+  /** ISO date-time of the phone call / satellite check, when applicable. */
+  verifiedAt?: string;
 }
 
 export type PatioCategory =

@@ -1,7 +1,15 @@
 import { getPosition, getTimes } from "suncalc";
 import { toZonedTime } from "date-fns-tz";
-import type { Orientation, Patio } from "@/lib/types";
+import type { ExposureSource, Orientation, Patio } from "@/lib/types";
 import { TORONTO_TIMEZONE } from "@/lib/constants";
+
+/** How much to trust a curated sun window, by where it came from. */
+const CONFIDENCE_BY_SOURCE: Record<ExposureSource, number> = {
+  "mockdata-csv": 0.5,
+  manual: 0.6,
+  "satellite-estimated": 0.7,
+  "phone-verified": 0.9,
+};
 
 export interface SunSnapshot {
   /** Sun altitude above horizon, degrees. <= 0 means below horizon (night). */
@@ -139,7 +147,7 @@ function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
     const from = parseHour(sunStartsAt);
     const to = parseHour(sunEndsAt);
     const inWindow = localHour >= from && localHour < to;
-    const confidence = patio.exposure.isMockExposure ? 0.5 : 0.8;
+    const confidence = CONFIDENCE_BY_SOURCE[patio.exposure.exposureSource];
     return {
       status: inWindow ? "sunny" : "shaded",
       confidence,

@@ -20,10 +20,15 @@ function makePatio(overrides: Partial<Patio>): Patio {
     lat: TORONTO_COORDS.lat,
     lng: TORONTO_COORDS.lng,
     category: "bar",
-    exposure: { obstructionFactor: 0.8 },
+    exposure: { obstructionFactor: 0.8, exposureSource: "manual" },
     sponsored: false,
     source: "manual",
     ...overrides,
+    exposure: {
+      obstructionFactor: 0.8,
+      exposureSource: "manual",
+      ...overrides.exposure,
+    },
   };
 }
 
@@ -85,6 +90,33 @@ describe("estimateExposure", () => {
     const tenAm = new Date("2025-06-21T14:00:00Z"); // ~10:00 EDT
     expect(estimateExposure(patio, twoPm).status).toBe("sunny");
     expect(estimateExposure(patio, tenAm).status).toBe("shaded");
+  });
+
+  it("trusts a phone-verified sun window more than a mockdata-csv one", () => {
+    const twoPm = new Date("2025-06-21T18:00:00Z"); // ~14:00 EDT, inside both windows
+    const mockPatio = makePatio({
+      exposure: {
+        obstructionFactor: 0.7,
+        sunStartsAt: "13:00",
+        sunEndsAt: "16:00",
+        exposureSource: "mockdata-csv",
+      },
+    });
+    const verifiedPatio = makePatio({
+      exposure: {
+        obstructionFactor: 0.7,
+        sunStartsAt: "13:00",
+        sunEndsAt: "16:00",
+        exposureSource: "phone-verified",
+      },
+    });
+    const mockResult = estimateExposure(mockPatio, twoPm);
+    const verifiedResult = estimateExposure(verifiedPatio, twoPm);
+    expect(mockResult.status).toBe("sunny");
+    expect(verifiedResult.status).toBe("sunny");
+    expect(mockResult.confidence).toBe(0.5);
+    expect(verifiedResult.confidence).toBe(0.9);
+    expect(verifiedResult.confidence).toBeGreaterThan(mockResult.confidence);
   });
 
   describe("cloud cover adjustment", () => {
