@@ -72,14 +72,32 @@ any real sun calculation), so every record is flagged
 | —                         | `exposure.orientation` (curate later) |
 | —                         | `sponsored*` (set for a few demo rows) |
 
-## Future: real Apify import
+## King St / Queen St batch (90 patios, `source: "apify"`)
 
-The user's real scraped list will be imported via
-[`scripts/import-apify.ts`](../scripts/import-apify.ts) (currently a stub).
-The Apify Google Maps scraper typically emits: `title`, `address`,
-`location.{lat,lng}`, `categoryName`, `totalScore`, `phone`, `website`,
-`imageUrl`, `placeId`. **None** of the `exposure.*` fields or `sponsored*` come
-from scraped data — imported records get `obstructionFactor: 0.5`,
-`exposureSource: "manual"`, and a `NEEDS EXPOSURE REVIEW` note so nothing ships
-with fabricated sun data until a human (satellite/phone verification) or the
-future shadow model curates it.
+Added from a real Apify Google Places export
+(`data/dataset_crawler-google-places_2026-08-07_17-40-17-604.json`, 1105
+places total across Toronto). Filtered to bar/restaurant-category places on
+King St W or Queen St W — chosen deliberately for **in-person validation**:
+walkable in a short window, unlike the citywide set. Curated down from 106
+street matches by dropping ~16 obvious non-candidates (basement-only
+locations, fast-casual/counter-service chains, catering/company listings).
+The 6 places already in the hand-curated seed set (BarChef, Ruby Soho, One
+Star Bar, Bar Hop, Score on Queen, Earls Kitchen + Bar King West) were left
+untouched rather than re-added.
+
+`id` is the Google `placeId` (stable, guaranteed-unique). `hours` is
+normalized from Apify's per-day 12-hour `openingHours` array down to a single
+`"HH:mm-HH:mm"` range (the most common range across the week; `"00:00-00:00"`
+if none parsed). **No exposure data** — `exposureSource: "manual"` with
+default `obstructionFactor: 0.5` and no `orientation`/`sunStartsAt`/
+`sunEndsAt`, so these read as low-confidence/shaded until validated in person
+and updated (see the main README for how to edit a patio's exposure by hand).
+
+## Future: full-city Apify import
+
+The rest of the 1105-place export (beyond King/Queen) is still sitting in
+`data/dataset_crawler-google-places_2026-08-07_17-40-17-604.json`, unused —
+citywide expansion is a separate, larger decision (see the performance
+discussion around marker clustering / list virtualization before scaling
+much past this point). `scripts/import-apify.ts` (a stub) sketches the same
+mapping used for the King/Queen batch above for when that happens.
