@@ -25,10 +25,32 @@ Exposure is derived two ways, in priority order (see `estimateExposure` in
 2. **Orientation fallback** — `orientation` (`N`…`NW` or `OPEN_SKY`) compared to
    the real sun azimuth (via `suncalc`), scaled by `obstructionFactor` (0..1).
 
+**A curated window always wins when both are set** — if a patio has
+`sunStartsAt`/`sunEndsAt` *and* `orientation`, the window is used and
+orientation is silently ignored. Don't leave a stale/fake window in place
+after adding real orientation data, or the orientation never takes effect.
+
 `preciseModelId` is a reserved swap point: when a real shadow-casting model
 (City of Toronto building footprints/heights) exists, records carrying it will
 use that model instead, and `estimateExposure` gets replaced wholesale with a
 same-signature `estimateExposureWithShadows`.
+
+### `obstructionFactor` tiers
+
+Rather than eyeballing a precise decimal, `obstructionFactor` is assigned from
+four fixed tiers — fast to judge in the field, honest about the actual
+precision available at MVP stage:
+
+| Tier       | `obstructionFactor` | Meaning                                          |
+| ---------- | -------------------- | ------------------------------------------------- |
+| Open       | 0.9                   | Rooftop or fully open, nothing nearby.             |
+| Light      | 0.7                   | Minor obstruction — some trees, a setback.         |
+| Moderate   | 0.5                   | Buildings on one side (e.g. Horseshoe Tavern).     |
+| Heavy      | 0.3                   | Narrow gap, mostly enclosed.                       |
+
+Patios with an `orientation` but no in-person obstruction check yet default to
+**Moderate (0.5)** as a neutral placeholder (see the `satellite-estimated`
+batch below).
 
 ### `exposureSource` and `verifiedAt`
 

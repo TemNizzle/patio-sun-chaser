@@ -28,6 +28,7 @@ export function PatioCard({
     patio.exposure.sunStartsAt,
     patio.exposure.sunEndsAt
   );
+  const isEstimated = patio.exposure.exposureSource !== "verified";
 
   return (
     <div
@@ -50,16 +51,21 @@ export function PatioCard({
           </div>
           <div className="mt-0.5 text-sm text-muted">{patio.neighborhood}</div>
         </div>
-        <span
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
-          style={{ backgroundColor: `${meta.color}22`, color: meta.color }}
-        >
+        <div className="flex shrink-0 flex-col items-end gap-1">
           <span
-            className="h-2 w-2 rounded-full"
-            style={{ backgroundColor: meta.color }}
-          />
-          {meta.label}
-        </span>
+            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+            style={{ backgroundColor: `${meta.color}22`, color: meta.color }}
+          >
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ backgroundColor: meta.color }}
+            />
+            {meta.label}
+          </span>
+          {isEstimated && (
+            <span className="text-[11px] text-muted">Estimated</span>
+          )}
+        </div>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
