@@ -18,7 +18,7 @@ export type ExposureSource =
   | "mockdata-csv" // known-fake synthetic window from the scraped CSV
   | "manual" // hand-set default guess, no real verification
   | "satellite-estimated" // orientation eyeballed from satellite/Street View
-  | "phone-verified"; // confirmed directly with staff on a call
+  | "verified"; // confirmed directly — phone call or in-person, treated the same
 
 export interface ExposureProfile {
   /** Which direction has open sky. Only used as a fallback when no manual sun window is set. */

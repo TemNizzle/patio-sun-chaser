@@ -8,7 +8,7 @@ const CONFIDENCE_BY_SOURCE: Record<ExposureSource, number> = {
   "mockdata-csv": 0.5,
   manual: 0.6,
   "satellite-estimated": 0.7,
-  "phone-verified": 0.9,
+  verified: 0.9,
 };
 
 export interface SunSnapshot {
@@ -41,7 +41,7 @@ export function getSunSnapshot(lat: number, lng: number, date: Date): SunSnapsho
   };
 }
 
-export type SunStatus = "sunny" | "partial" | "shaded" | "closed-sky";
+export type SunStatus = "sunny" | "shaded" | "closed-sky";
 
 export interface ExposureResult {
   status: SunStatus;
@@ -102,34 +102,21 @@ export function estimateExposure(
 }
 
 const CLOUD_OVERCAST_THRESHOLD = 70;
-const CLOUD_PARTLY_CLOUDY_THRESHOLD = 30;
 
 /** Discounts a sun-position result using live cloud cover (0-100%). */
 function applyCloudCover(
   result: ExposureResult,
   cloudCoverPercent: number
 ): ExposureResult {
+  if (cloudCoverPercent <= CLOUD_OVERCAST_THRESHOLD || result.status === "shaded") {
+    return result;
+  }
   const pct = Math.round(cloudCoverPercent);
-
-  if (cloudCoverPercent > CLOUD_OVERCAST_THRESHOLD) {
-    if (result.status === "shaded") return result;
-    return {
-      status: "shaded",
-      confidence: Math.min(result.confidence, 0.7),
-      reason: `${result.reason} Overcast (${pct}% cloud cover) blocks direct sun.`,
-    };
-  }
-
-  if (cloudCoverPercent >= CLOUD_PARTLY_CLOUDY_THRESHOLD) {
-    if (result.status !== "sunny") return result;
-    return {
-      status: "partial",
-      confidence: result.confidence * 0.7,
-      reason: `${result.reason} Partly cloudy (${pct}% cloud cover).`,
-    };
-  }
-
-  return result;
+  return {
+    status: "shaded",
+    confidence: Math.min(result.confidence, 0.7),
+    reason: `${result.reason} Overcast (${pct}% cloud cover) blocks direct sun.`,
+  };
 }
 
 function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
@@ -176,9 +163,8 @@ function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
   if (diff <= halfArc) {
     const centeredness = 1 - diff / halfArc;
     const confidence = Math.max(0.1, centeredness * obstructionFactor);
-    const status: SunStatus = confidence > 0.4 ? "sunny" : "partial";
     return {
-      status,
+      status: "sunny",
       confidence,
       reason: `Sun bearing ${Math.round(snap.azimuthDeg)}° within ${orientation} arc.`,
     };
@@ -193,7 +179,7 @@ function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
 
 /**
  * Estimated sun window for a calendar date: scans sunrise -> sunset in fixed
- * steps and returns the first/last sunny-or-partial instant.
+ * steps and returns the first/last sunny instant.
  */
 export function estimateSunWindow(
   patio: Patio,
@@ -208,7 +194,7 @@ export function estimateSunWindow(
   for (let t = snap.sunrise.getTime(); t <= snap.sunset.getTime(); t += stepMs) {
     const d = new Date(t);
     const result = estimateExposure(patio, d);
-    if (result.status === "sunny" || result.status === "partial") {
+    if (result.status === "sunny") {
       if (!start) start = d;
       end = d;
     }

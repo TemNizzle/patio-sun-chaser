@@ -48,11 +48,11 @@ export function HomeView({
       list = list.filter((p) => p.neighborhood === filters.neighborhood);
     }
     if (filters.sunnyOnly) {
-      list = list.filter((p) => {
-        const status = estimateExposure(p, now, weather?.cloudCoverPercent)
-          .status;
-        return status === "sunny" || status === "partial";
-      });
+      list = list.filter(
+        (p) =>
+          estimateExposure(p, now, weather?.cloudCoverPercent).status ===
+          "sunny"
+      );
     }
     return sortPatios(list, at, cloudCoverPercent);
   }, [patios, filters, at, now, weather, cloudCoverPercent]);

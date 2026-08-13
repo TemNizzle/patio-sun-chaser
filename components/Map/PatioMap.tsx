@@ -9,7 +9,6 @@ import { TORONTO_COORDS } from "@/lib/constants";
 
 const STATUS_COLOR: Record<SunStatus, string> = {
   sunny: "#22c55e",
-  partial: "#f5b301",
   shaded: "#94a3b8",
   "closed-sky": "#64748b",
 };

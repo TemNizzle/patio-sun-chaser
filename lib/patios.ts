@@ -27,7 +27,7 @@ export function sortPatios(
 ): Patio[] {
   const confidenceNow = (p: Patio): number => {
     const r = estimateExposure(p, at, cloudCoverPercent);
-    return r.status === "sunny" || r.status === "partial" ? r.confidence : 0;
+    return r.status === "sunny" ? r.confidence : 0;
   };
 
   return [...patios].sort((a, b) => {

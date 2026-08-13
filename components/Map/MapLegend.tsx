@@ -1,6 +1,5 @@
 const ITEMS = [
   { color: "var(--sun-sunny)", label: "Sunny now" },
-  { color: "var(--sun-partial)", label: "Partial" },
   { color: "var(--sun-shaded)", label: "Shaded" },
   { color: "var(--you)", label: "You" },
 ];

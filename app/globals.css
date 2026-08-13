@@ -8,7 +8,6 @@
   --muted: #64748b;
   --border: #dfe5ee;
   --sun-sunny: #22c55e;
-  --sun-partial: #f5b301;
   --sun-shaded: #94a3b8;
   --sun-accent: #f5a623;
   --you: #2f6fed;
@@ -22,7 +21,6 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-sunny: var(--sun-sunny);
-  --color-partial: var(--sun-partial);
   --color-shaded: var(--sun-shaded);
   --color-accent: var(--sun-accent);
   --color-you: var(--you);

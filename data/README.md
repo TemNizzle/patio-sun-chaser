@@ -39,13 +39,13 @@ Every `ExposureProfile` declares where its data came from, via `exposureSource`:
 | `"mockdata-csv"`        | Known-fake synthetic window from the scraped CSV.                | 0.5        |
 | `"manual"`               | Hand-set default guess, no real verification.                    | 0.6        |
 | `"satellite-estimated"`  | Orientation eyeballed from satellite/Street View.                 | 0.7        |
-| `"phone-verified"`      | Confirmed directly with staff on a call.                          | 0.9        |
+| `"verified"`            | Confirmed directly — phone call or in-person, treated the same.  | 0.9        |
 
 `estimateExposure()` uses this to weight its confidence score for the curated
 sun-window branch (see `CONFIDENCE_BY_SOURCE` in `lib/sun-exposure.ts`), and it
 determines what disclaimer/confirmation text the detail page shows (see
 `exposureSourceNote` in `lib/format.ts`). `verifiedAt` (ISO date-time) records
-when a `"phone-verified"` or `"satellite-estimated"` check happened.
+when a `"verified"` or `"satellite-estimated"` check happened.
 
 ## Current seed data (`patios.seed.ts`)
 

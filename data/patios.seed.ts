@@ -1046,7 +1046,7 @@ export const seedPatios: Patio[] = [
       sunEndsAt: "16:00",
       notes:
         "In-person: SE-facing patio, ~2-story obstruction on the left side. Sunny ~12:00-16:00, partial outside that window (partial state not yet representable outside the curated window).",
-      exposureSource: "phone-verified",
+      exposureSource: "verified",
       verifiedAt: "2026-08-13",
     },
     sponsored: false,

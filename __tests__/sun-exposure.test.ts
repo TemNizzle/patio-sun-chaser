@@ -82,6 +82,13 @@ describe("estimateExposure", () => {
     expect(estimateExposure(patio, morning).status).toBe("shaded");
   });
 
+  it("counts as sunny anywhere within the orientation arc, even off-center", () => {
+    // ~15:00 EDT: sun ~54° off due south, still within the 70°-half-width S arc.
+    const patio = makePatio({ exposure: { obstructionFactor: 0.9, orientation: "S" } });
+    const lateAfternoon = new Date("2025-06-21T19:00:00Z");
+    expect(estimateExposure(patio, lateAfternoon).status).toBe("sunny");
+  });
+
   it("honors a curated sun window", () => {
     const patio = makePatio({
       exposure: { obstructionFactor: 0.7, sunStartsAt: "13:00", sunEndsAt: "16:00" },
@@ -92,7 +99,7 @@ describe("estimateExposure", () => {
     expect(estimateExposure(patio, tenAm).status).toBe("shaded");
   });
 
-  it("trusts a phone-verified sun window more than a mockdata-csv one", () => {
+  it("trusts a verified sun window more than a mockdata-csv one", () => {
     const twoPm = new Date("2025-06-21T18:00:00Z"); // ~14:00 EDT, inside both windows
     const mockPatio = makePatio({
       exposure: {
@@ -107,7 +114,7 @@ describe("estimateExposure", () => {
         obstructionFactor: 0.7,
         sunStartsAt: "13:00",
         sunEndsAt: "16:00",
-        exposureSource: "phone-verified",
+        exposureSource: "verified",
       },
     });
     const mockResult = estimateExposure(mockPatio, twoPm);
@@ -129,9 +136,9 @@ describe("estimateExposure", () => {
       expect(result.status).toBe("sunny");
     });
 
-    it("downgrades sunny to partial when 30-70% cloud cover", () => {
+    it("leaves sunny unchanged at 30-70% cloud cover", () => {
       const result = estimateExposure(patio, solarNoon, 50);
-      expect(result.status).toBe("partial");
+      expect(result.status).toBe("sunny");
     });
 
     it("forces shaded when cloud cover is over 70%, regardless of sun position", () => {
