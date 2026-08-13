@@ -381,8 +381,8 @@ export const seedPatios: Patio[] = [
     phone: "+1 416-977-9936",
     website: "http://charlottesroom.com/",
     hours: "16:00-02:00",
-    exposure: { obstructionFactor: 0.5, exposureSource: "manual" },
-    sponsored: false,
+    exposure: { orientation: "SE", obstructionFactor: 0.5, exposureSource: "manual" },
+    sponsored: true,
     source: "apify",
   },
   {
