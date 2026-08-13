@@ -1039,7 +1039,16 @@ export const seedPatios: Patio[] = [
     phone: "+1 416-598-4226",
     website: "http://www.horseshoetavern.com/",
     hours: "12:00-02:00",
-    exposure: { obstructionFactor: 0.5, exposureSource: "manual" },
+    exposure: {
+      orientation: "SE",
+      obstructionFactor: 0.6,
+      sunStartsAt: "12:00",
+      sunEndsAt: "16:00",
+      notes:
+        "In-person: SE-facing patio, ~2-story obstruction on the left side. Sunny ~12:00-16:00, partial outside that window (partial state not yet representable outside the curated window).",
+      exposureSource: "phone-verified",
+      verifiedAt: "2026-08-13",
+    },
     sponsored: false,
     source: "apify",
   },
