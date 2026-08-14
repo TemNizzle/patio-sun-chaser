@@ -1041,9 +1041,7 @@ export const seedPatios: Patio[] = [
     hours: "12:00-02:00",
     exposure: {
       orientation: "SE",
-      obstructionFactor: 0.6,
-      sunStartsAt: "12:00",
-      sunEndsAt: "16:00",
+      obstructionFactor: 0.7,
       notes:
         "In-person: SE-facing patio, ~2-story obstruction on the left side. Sunny ~12:00-16:00, partial outside that window (partial state not yet representable outside the curated window).",
       exposureSource: "verified",
