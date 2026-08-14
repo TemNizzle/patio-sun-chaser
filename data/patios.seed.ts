@@ -20,7 +20,7 @@ export const seedPatios: Patio[] = [
     lng: -79.399379,
     category: "bar",
     hours: "00:00-00:00",
-    exposure: { obstructionFactor: 0.7, sunStartsAt: "13:00", sunEndsAt: "16:00", exposureSource: "mockdata-csv" },
+    exposure: { orientation: "SW", obstructionFactor: 0.5, exposureSource: "verified" },
     sponsored: true,
     sponsorRank: 1,
     sponsorLabel: "Featured Patio",
