@@ -123,7 +123,7 @@ export const seedPatios: Patio[] = [
     hours: "17:00-02:00",
     exposure: { orientation: "N", obstructionFactor: 0.7, exposureSource: "verified" },
     sponsored: false,
-    source: "Manual",
+    source: "manual",
   },
   {
     id: "40",
