@@ -208,6 +208,7 @@ export const seedPatios: Patio[] = [
     exposure: { orientation: "E", obstructionFactor: 0.7, exposureSource: "verified" },
     sponsored: false,
     source: "manual",
+  },
   {
     id: "48",
     slug: "walrus-pub",
