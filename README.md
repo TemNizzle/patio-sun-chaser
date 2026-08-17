@@ -6,8 +6,11 @@ sun will be there, so groups can plan their sun-chasing outings.
 ## What it does (v1)
 
 - **Live map** of Toronto patios with 3D building massing (Mapbox GL), where
-  each marker is colored by whether the patio is **in the sun right now**
-  (green), partly sunny (amber), or shaded (gray).
+  each marker is colored along a **sun-intensity gradient**: red = in direct
+  sun right now, amber = the sun is up but this patio is shaded, green = no
+  sun to be had (below the horizon). The scale describes how much sun is
+  available, not how good the patio is — sun-seekers and shade-seekers read
+  the same colors from opposite ends.
 - **Directory / list view** filterable by neighborhood and "sunny now", with
   sponsored listings surfaced first.
 - **Patio detail pages** (statically generated, SEO-friendly) with a

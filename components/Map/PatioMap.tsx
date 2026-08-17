@@ -4,14 +4,9 @@ import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { Patio } from "@/lib/types";
-import { estimateExposure, type SunStatus } from "@/lib/sun-exposure";
+import { estimateExposure } from "@/lib/sun-exposure";
+import { STATUS_META } from "@/lib/format";
 import { TORONTO_COORDS } from "@/lib/constants";
-
-const STATUS_COLOR: Record<SunStatus, string> = {
-  sunny: "#22c55e",
-  shaded: "#94a3b8",
-  "closed-sky": "#64748b",
-};
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -111,7 +106,7 @@ export function PatioMap({
     for (const patio of patios) {
       seen.add(patio.id);
       const status = estimateExposure(patio, at, cloudCoverPercent).status;
-      const color = STATUS_COLOR[status];
+      const color = STATUS_META[status].color;
       const ring = patio.sponsored || patio.id === selectedId;
 
       let marker = markersRef.current.get(patio.id);

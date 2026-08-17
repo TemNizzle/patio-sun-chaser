@@ -1,6 +1,10 @@
+import { STATUS_META } from "@/lib/format";
+
+// Ordered along the sun-intensity gradient: most sun -> none.
 const ITEMS = [
-  { color: "var(--sun-sunny)", label: "Sunny now" },
-  { color: "var(--sun-shaded)", label: "Shaded" },
+  { color: STATUS_META.sunny.color, label: "Direct sun" },
+  { color: STATUS_META.shaded.color, label: "Shaded" },
+  { color: STATUS_META["closed-sky"].color, label: "No sun" },
   { color: "var(--you)", label: "You" },
 ];
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
-import { STATUS_META, formatHours, formatSunWindow, mapsUrl } from "@/lib/format";
+import { STATUS_META, formatHours, patioSunWindow, mapsUrl } from "@/lib/format";
 import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
 
 interface Props {
@@ -24,10 +24,7 @@ export function PatioCard({
   const exposure = estimateExposure(patio, at, cloudCoverPercent);
   const meta = STATUS_META[exposure.status];
   const hours = formatHours(patio.hours);
-  const sunWindow = formatSunWindow(
-    patio.exposure.sunStartsAt,
-    patio.exposure.sunEndsAt
-  );
+  const sunWindow = patioSunWindow(patio, at);
   const isEstimated = patio.exposure.exposureSource !== "verified";
 
   return (
@@ -74,7 +71,7 @@ export function PatioCard({
             <span aria-hidden className="text-accent">
               ☀
             </span>
-            Sun {sunWindow}
+            Sun {sunWindow.text}
           </span>
         )}
         {hours && (

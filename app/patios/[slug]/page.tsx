@@ -2,10 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPatios, getPatioBySlug } from "@/lib/patios";
-import { formatHours, formatSunWindow, mapsUrl, exposureSourceNote } from "@/lib/format";
+import { formatHours, patioSunWindow, mapsUrl, exposureSourceNote } from "@/lib/format";
 import { PatioExposurePanel } from "@/components/PatioExposurePanel";
 import { AdSlot } from "@/components/Ads/AdSlot";
 import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
+
+/**
+ * The orientation-derived sun window depends on the date, so a page built once
+ * would serve a stale window forever. Re-render daily.
+ */
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const patios = await getAllPatios();
@@ -36,10 +42,7 @@ export default async function PatioPage({
   if (!patio) notFound();
 
   const hours = formatHours(patio.hours);
-  const sunWindow = formatSunWindow(
-    patio.exposure.sunStartsAt,
-    patio.exposure.sunEndsAt
-  );
+  const sunWindow = patioSunWindow(patio, new Date());
   const sourceNote = exposureSourceNote(patio.exposure);
 
   return (
@@ -64,9 +67,11 @@ export default async function PatioPage({
         {sunWindow && (
           <div className="rounded-xl border border-border bg-surface p-4">
             <dt className="text-xs uppercase tracking-wide text-muted">
-              Typical sun window
+              {sunWindow.isEstimate ? "Estimated sun window today" : "Typical sun window"}
             </dt>
-            <dd className="mt-1 font-semibold text-foreground">☀ {sunWindow}</dd>
+            <dd className="mt-1 font-semibold text-foreground">
+              ☀ {sunWindow.text}
+            </dd>
           </div>
         )}
         <div className="rounded-xl border border-border bg-surface p-4">
