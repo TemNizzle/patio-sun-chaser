@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPatios, getPatioBySlug } from "@/lib/patios";
-import { formatHours, patioSunWindow, mapsUrl, exposureSourceNote } from "@/lib/format";
+import { patioSunWindow, mapsUrl, exposureSourceNote } from "@/lib/format";
 import { PatioExposurePanel } from "@/components/PatioExposurePanel";
 import { AdSlot } from "@/components/Ads/AdSlot";
 import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
@@ -41,7 +41,6 @@ export default async function PatioPage({
   const patio = await getPatioBySlug(slug);
   if (!patio) notFound();
 
-  const hours = formatHours(patio.hours);
   const sunWindow = patioSunWindow(patio, new Date());
   const sourceNote = exposureSourceNote(patio.exposure);
 
@@ -63,24 +62,18 @@ export default async function PatioPage({
         <PatioExposurePanel patio={patio} />
       </div>
 
-      <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {sunWindow && (
-          <div className="rounded-xl border border-border bg-surface p-4">
-            <dt className="text-xs uppercase tracking-wide text-muted">
-              {sunWindow.isEstimate ? "Estimated sun window today" : "Typical sun window"}
-            </dt>
-            <dd className="mt-1 font-semibold text-foreground">
-              ☀ {sunWindow.text}
-            </dd>
-          </div>
-        )}
-        <div className="rounded-xl border border-border bg-surface p-4">
-          <dt className="text-xs uppercase tracking-wide text-muted">Hours</dt>
+      {sunWindow && (
+        <dl className="mt-6 rounded-xl border border-border bg-surface p-4">
+          <dt className="text-xs uppercase tracking-wide text-muted">
+            {sunWindow.isEstimate
+              ? "Estimated sun window today"
+              : "Typical sun window"}
+          </dt>
           <dd className="mt-1 font-semibold text-foreground">
-            {hours ?? "Not available"}
+            ☀ {sunWindow.text}
           </dd>
-        </div>
-      </dl>
+        </dl>
+      )}
 
       <a
         href={mapsUrl(patio.address)}

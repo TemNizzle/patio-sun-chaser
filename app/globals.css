@@ -13,7 +13,10 @@
   --sun-sunny: #ef4444;
   --sun-shaded: #f59e0b;
   --sun-closed-sky: #16a34a;
-  --sun-accent: #f5a623;
+  /* Cool, so the warm end of the spectrum belongs to sun status alone — the
+     old gold was a near-match for --sun-shaded. Cyan-leaning to stay
+     distinguishable from the indigo --you marker. */
+  --sun-accent: #0369a1;
   --you: #2f6fed;
 }
 
@@ -41,6 +44,8 @@
     --foreground: #e6edf3;
     --muted: #8b96a5;
     --border: #263040;
+    /* Sky-700 is too dim on the dark surface; lighten to keep link contrast. */
+    --sun-accent: #38bdf8;
   }
 }
 

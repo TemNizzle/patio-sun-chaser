@@ -18,16 +18,16 @@ export function PatioExposurePanel({ patio }: { patio: Patio }) {
     <div className="flex flex-col gap-3">
       <div
         className="flex items-center gap-3 rounded-xl border p-4"
-        style={{ borderColor: meta.color, backgroundColor: `${meta.color}14` }}
+        style={{ borderColor: `${meta.color}55`, backgroundColor: `${meta.color}14` }}
       >
         <span
           className="h-4 w-4 rounded-full"
           style={{ backgroundColor: meta.color }}
         />
         <div>
-          <div className="font-semibold" style={{ color: meta.color }}>
-            {meta.label}
-          </div>
+          {/* The dot carries the status colour. Colouring the label too made a
+              sunny patio read like an error state. */}
+          <div className="font-semibold text-foreground">{meta.label}</div>
           <div className="text-sm text-muted">{exposure.reason}</div>
         </div>
       </div>

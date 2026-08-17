@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Patio } from "@/lib/types";
-import { formatHours, formatSunWindow, mapsUrl } from "@/lib/format";
+import { formatHours, patioSunWindow, mapsUrl } from "@/lib/format";
 
 interface Props {
   patio: Patio;
@@ -11,10 +11,7 @@ interface Props {
 
 export function PatioDetailCard({ patio, onClose }: Props) {
   const hours = formatHours(patio.hours);
-  const sunWindow = formatSunWindow(
-    patio.exposure.sunStartsAt,
-    patio.exposure.sunEndsAt
-  );
+  const sunWindow = patioSunWindow(patio, new Date());
 
   return (
     <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 p-3">
@@ -33,9 +30,9 @@ export function PatioDetailCard({ patio, onClose }: Props) {
                 {hours ?? "Hours unavailable"}
               </span>
               {sunWindow && (
-                <span className="inline-flex items-center gap-1.5 font-medium text-accent">
+                <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
                   <span aria-hidden>☀</span>
-                  {sunWindow}
+                  {sunWindow.text}
                 </span>
               )}
             </div>
