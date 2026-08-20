@@ -1,14 +1,20 @@
 import { seedPatios } from "@/data/patios.seed";
 import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
+import { applyOrientationOverrides } from "@/lib/orientation-overrides";
+
+/** Seed data with data/orientations.json merged over it. */
+function allPatios(): Patio[] {
+  return applyOrientationOverrides(seedPatios);
+}
 
 /** Thin data-access layer. Swap the body for a DB query later; callers stay unchanged. */
 export async function getAllPatios(): Promise<Patio[]> {
-  return seedPatios;
+  return allPatios();
 }
 
 export async function getPatioBySlug(slug: string): Promise<Patio | undefined> {
-  return seedPatios.find((p) => p.slug === slug);
+  return allPatios().find((p) => p.slug === slug);
 }
 
 export function getNeighborhoods(patios: Patio[]): string[] {

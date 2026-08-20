@@ -52,6 +52,36 @@ Patios with an `orientation` but no in-person obstruction check yet default to
 **Moderate (0.5)** as a neutral placeholder (see the `satellite-estimated`
 batch below).
 
+### Collecting orientation: `/admin/orientation`
+
+Run `npm run dev` and open `/admin/orientation` — a keyboard-driven entry tool
+over Mapbox satellite imagery, locked north-up and flat so the compass
+judgement stays correct. It lists every seed patio with no `orientation` and no
+curated window.
+
+Keys are positioned to match the compass, so judging a direction and pressing
+it are the same motion:
+
+```
+Q W E     NW  N  NE
+A O D  →   W  ·  E     O = OPEN_SKY (rooftop)
+Z X C     SW  S  SE
+```
+
+`1`–`4` set the obstruction tier and stick until changed, so a run of similar
+street-level patios needs one keystroke each. `S`/`→` skips, `Backspace` goes
+back. Every entry writes through to `data/orientations.json`.
+
+That file is merged over the seed at read time by `applyOrientationOverrides()`
+in [`lib/orientation-overrides.ts`](../lib/orientation-overrides.ts), which
+stamps `exposureSource: "satellite-estimated"` and `verifiedAt`. Keeping it out
+of `patios.seed.ts` means a fast entry session never rewrites TypeScript
+source. A patio still carrying a curated window is refused with a console
+warning rather than silently accepting data `estimateExposure` would ignore.
+
+The page and its API route are dev-only — they write to the repo working tree,
+which does not exist on a deployed host.
+
 ### `exposureSource` and `verifiedAt`
 
 Every `ExposureProfile` declares where its data came from, via `exposureSource`:
