@@ -1,18 +1,98 @@
 {
+  "ChIJ___PRd40K4gRhrAxfrPPGt4": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:31:02.476Z"
+  },
+  "ChIJ___Pvd40K4gRmTsHAIN-2jM": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:13:27.533Z"
+  },
+  "ChIJ__8vON40K4gRrdSTtnF6X78": {
+    "orientation": "N",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-20T17:55:45.283Z"
+  },
+  "ChIJ_a95lxA1K4gRrWeqZN_BKso": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T17:58:00.964Z"
+  },
+  "ChIJ_cqVhNE0K4gRDWZarJCuFLI": {
+    "orientation": "W",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:32:40.764Z"
+  },
   "ChIJ-8eGLTA1K4gR7uaQYAc2ciE": {
     "orientation": "N",
     "obstructionFactor": 0.3,
     "verifiedAt": "2026-08-20T16:15:17.935Z"
+  },
+  "ChIJ-RAxeOg1K4gRJarrmUB4AZg": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:34:00.930Z"
+  },
+  "ChIJ0eQZORw1K4gRylq9ZDePOGs": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:07:07.482Z"
+  },
+  "ChIJ12AmPhw1K4gR33LhJYkXsYg": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:17:37.917Z"
   },
   "ChIJ1elEw2rL1IkRGIfjx_v91FQ": {
     "orientation": "OPEN_SKY",
     "obstructionFactor": 0.9,
     "verifiedAt": "2026-08-20T16:18:19.675Z"
   },
+  "ChIJ20tc0VM1K4gRBLGy0cKlv0U": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T17:59:36.640Z"
+  },
   "ChIJ243-C381K4gRHMKWCGU86iM": {
     "orientation": "E",
     "obstructionFactor": 0.3,
     "verifiedAt": "2026-08-20T16:11:30.133Z"
+  },
+  "ChIJ2d-gcGI1K4gRUUPI93CZxu8": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:01:47.895Z"
+  },
+  "ChIJ2Q4I5uM0K4gRzH6JQeYc9UE": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:23:29.803Z"
+  },
+  "ChIJ2xaY5nw1K4gR9K7oO4aKcb0": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:17:21.184Z"
+  },
+  "ChIJ4-IHl0A1K4gRBDkEOrIrrYs": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:15:41.863Z"
+  },
+  "ChIJ48C7fuA0K4gRF6kQuWDCeS4": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:01:28.741Z"
+  },
+  "ChIJ4b2_f3k1K4gRxZWsYaOUgwA": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:23:37.469Z"
+  },
+  "ChIJ4Wd_uVA1K4gRI3l0VPL6ilY": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:20:53.768Z"
   },
   "ChIJ586kfMc1K4gR3sOdu0GM004": {
     "orientation": "S",
@@ -24,6 +104,36 @@
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:16:58.389Z"
   },
+  "ChIJ7YABuC41K4gRfjQV4J1f8o8": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:18:31.053Z"
+  },
+  "ChIJ86-DU8E1K4gRtN0lhJOSncI": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:12:08.084Z"
+  },
+  "ChIJ8bxierc1K4gRX1CEdlDHBGA": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:02:25.491Z"
+  },
+  "ChIJ8y6vhvE1K4gRqbX2o9dc9Ts": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:05:46.220Z"
+  },
+  "ChIJ96kfFn01K4gR3D2dNY9yOj8": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:24:19.865Z"
+  },
+  "ChIJA1AA7NA0K4gR4X3XNuLiFCM": {
+    "orientation": "SW",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T17:59:14.410Z"
+  },
   "ChIJA1AA7NA0K4gRRp-dJUOEpbM": {
     "orientation": "W",
     "obstructionFactor": 0.5,
@@ -34,39 +144,299 @@
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:16:13.728Z"
   },
+  "ChIJAQGDdBQ1K4gRPpzdBT8iyIo": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T17:57:04.856Z"
+  },
+  "ChIJAW89Utw0K4gRiHIa-rYjxdY": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:14:52.438Z"
+  },
+  "ChIJc69vfR41K4gRPnTHC8ZA-A8": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:08:59.425Z"
+  },
+  "ChIJc6AP0Wo1K4gR4Qej9tw_aus": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:15:16.445Z"
+  },
+  "ChIJcbZF0Bg1K4gROD3Ymk-q3s8": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:18:44.270Z"
+  },
+  "ChIJcxcJLP41K4gRjRJzLMuX52s": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:34:20.491Z"
+  },
+  "ChIJd6qMg9w0K4gRJLQ6fdW-WEU": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:16:59.015Z"
+  },
+  "ChIJDQIXT9s1K4gRhyu5jSrb8CU": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:05:03.268Z"
+  },
+  "ChIJEcnKmlU1K4gRbxj0mSBVoYs": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:30:44.927Z"
+  },
+  "ChIJfdB9Lko1K4gRpy6wYMC6N4c": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:30:01.811Z"
+  },
+  "ChIJgWPD3301K4gRDovwKmpQREc": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:33:30.503Z"
+  },
+  "ChIJi0GJ1d80K4gRFJurliQjY80": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:28:41.717Z"
+  },
+  "ChIJi6IZvd00K4gR1Yyh4xYrAII": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:16:54.910Z"
+  },
+  "ChIJISGG7Q81K4gRdYHt4d03Yws": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:30:25.735Z"
+  },
+  "ChIJiViSclA1K4gRluyj49dcOx0": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:19:12.227Z"
+  },
+  "ChIJIVSL3sY1K4gRhANM6Wrwzrc": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:06:28.827Z"
+  },
+  "ChIJJd5tRi01K4gRVBb6aGWrR9M": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:31:57.101Z"
+  },
+  "ChIJJTVIXZI1K4gRnBPVQnXmrcg": {
+    "orientation": "N",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:22:01.193Z"
+  },
+  "ChIJLQmM1d80K4gRFvfYfJpVrS4": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:24:43.056Z"
+  },
   "ChIJlyT_yQ41K4gRiebG3-TxSuQ": {
     "orientation": "N",
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:08:50.806Z"
+  },
+  "ChIJmxVmit00K4gR7pFZI0ns6HA": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:20:00.534Z"
+  },
+  "ChIJmYso8K81K4gRA4L2hOFdZ9Y": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:00:51.968Z"
+  },
+  "ChIJo6YcMgA1K4gRIqc0cGxLS7s": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:31:15.167Z"
+  },
+  "ChIJoRVmit00K4gR2NDjcJcLB2A": {
+    "orientation": "N",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-20T18:21:58.223Z"
+  },
+  "ChIJP7DN9t40K4gRWHmPH_GzUTo": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:29:20.973Z"
+  },
+  "ChIJpdyRK2g1K4gRLskEAnyUYpY": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:21:00.128Z"
   },
   "ChIJpRkk1JU1K4gR3VlpkiXr-mk": {
     "orientation": "W",
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:15:22.862Z"
   },
+  "ChIJq6pG2do0K4gRUiLKjtSh4fk": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:26:22.398Z"
+  },
+  "ChIJqRt5fA41K4gRs2NMmoMjbpg": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:34:46.213Z"
+  },
+  "ChIJQz2McwA1K4gRzn01ddFL4T4": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T17:56:43.888Z"
+  },
   "ChIJr_tCsVg1K4gREHA5C-YHJys": {
     "orientation": "W",
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:18:10.141Z"
+  },
+  "ChIJr9ykIDA1K4gRnFOAZG3zW5s": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:10:52.254Z"
+  },
+  "ChIJrQKY22k1K4gRGX9Ce60NHZY": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:30:14.155Z"
+  },
+  "ChIJrVGf61E1K4gRbPyNbg4492E": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:26:45.290Z"
+  },
+  "ChIJrWJ6w9o0K4gReSmgRRvag0I": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:13:03.779Z"
+  },
+  "ChIJs4KUbns1K4gRIGxDSOMmieA": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:23:34.094Z"
   },
   "ChIJs8v3S9k0K4gRN4P9zGYpo2M": {
     "orientation": "OPEN_SKY",
     "obstructionFactor": 0.9,
     "verifiedAt": "2026-08-20T16:17:42.677Z"
   },
+  "ChIJSwFbPX01K4gR9JJwc4ZNI9A": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:18:11.052Z"
+  },
+  "ChIJSXT5Ids0K4gRsDMq7GUdC44": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:26:26.465Z"
+  },
+  "ChIJT9j-Xow1K4gRK7bEP2emGPA": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:17:53.216Z"
+  },
+  "ChIJU402EVw1K4gR0-YuFkR0CvU": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:23:04.341Z"
+  },
+  "ChIJu5XwqHo1K4gR719gMRDVzn4": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:24:47.607Z"
+  },
+  "ChIJu6NKUN40K4gRC70ylqfYCUI": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:12:50.548Z"
+  },
+  "ChIJUxg5Mc40K4gRqeelKegdE3c": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:04:31.918Z"
+  },
+  "ChIJuYBwTrg1K4gRwsT6EW2-L0Q": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:22:27.389Z"
+  },
+  "ChIJuyuhDto0K4gRkvMdzStokBM": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:19:24.100Z"
+  },
   "ChIJv0YHUcs0K4gRogCUSHL4UAE": {
     "orientation": "SE",
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:13:20.345Z"
+  },
+  "ChIJVVWlINo0K4gR5WNUfKru8Sc": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:01:53.303Z"
   },
   "ChIJx6iMpok1K4gRmc5_9R5iUT0": {
     "orientation": "W",
     "obstructionFactor": 0.7,
     "verifiedAt": "2026-08-20T16:17:57.969Z"
   },
+  "ChIJXcsN8AI1K4gRS7ceuC8xQFo": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:33:03.953Z"
+  },
+  "ChIJXQ3fe5M1K4gRhuy9ctns_Qc": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:18:58.269Z"
+  },
+  "ChIJxzagdBs1K4gR1Ql8mTqxtA0": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:29:37.226Z"
+  },
   "ChIJy3MZvtA0K4gRE3BDlNMtgHo": {
     "orientation": "N",
     "obstructionFactor": 0.5,
     "verifiedAt": "2026-08-20T16:13:02.974Z"
+  },
+  "ChIJyUsC3s80K4gR2Svsdtv57Es": {
+    "orientation": "W",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:05:42.989Z"
+  },
+  "ChIJz1tWfKg1K4gRsAbrro19kZc": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:08:10.003Z"
+  },
+  "ChIJZePOld40K4gRdyYgVB5rKZA": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-20T18:01:08.807Z"
+  },
+  "ChIJzTgVrGo1K4gRoSQ4GlzM0wM": {
+    "orientation": "N",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:10:24.197Z"
+  },
+  "ChIJZx0E0s80K4gRerQhyTLjiRI": {
+    "orientation": "N",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-20T18:03:16.487Z"
+  },
+  "ChIJzXrOjd40K4gRGOnZK_uJpZE": {
+    "orientation": "S",
+    "obstructionFactor": 0.3,
+    "verifiedAt": "2026-08-20T18:25:37.031Z"
   }
 }
