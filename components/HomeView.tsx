@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { Patio } from "@/lib/types";
 import type { WeatherSnapshot } from "@/lib/weather";
 import { estimateExposure } from "@/lib/sun-exposure";
@@ -29,10 +29,8 @@ export function HomeView({
     sunnyOnly: false,
   });
   const [selectedId, setSelectedId] = useState<string | undefined>();
-  const [userLocation, setUserLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const [locateError, setLocateError] = useState<string | null>(null);
+  const locateRef = useRef<(() => void) | null>(null);
 
   const at = previewAt ?? now;
   const neighborhoods = useMemo(() => getNeighborhoods(patios), [patios]);
@@ -59,17 +57,14 @@ export function HomeView({
 
   const selected = patios.find((p) => p.id === selectedId);
 
+  // Stable identity: PatioMap calls this from an effect keyed on the prop.
+  const handleLocateReady = useCallback((trigger: () => void) => {
+    locateRef.current = trigger;
+  }, []);
+
   const locate = () => {
-    if (!("geolocation" in navigator)) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) =>
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        }),
-      () => {},
-      { enableHighAccuracy: true, timeout: 8000 }
-    );
+    setLocateError(null);
+    locateRef.current?.();
   };
 
   return (
@@ -82,7 +77,8 @@ export function HomeView({
           cloudCoverPercent={cloudCoverPercent}
           selectedId={selectedId}
           onSelect={setSelectedId}
-          userLocation={userLocation}
+          onLocateReady={handleLocateReady}
+          onLocateError={setLocateError}
         />
         <MapLegend />
         <button
@@ -91,6 +87,20 @@ export function HomeView({
         >
           📍 Find me
         </button>
+        {locateError && (
+          <div
+            role="status"
+            className="absolute bottom-4 right-4 z-30 max-w-[15rem] rounded-xl border border-border bg-surface/95 p-3 text-xs shadow-lg backdrop-blur"
+          >
+            <p className="text-foreground">{locateError}</p>
+            <button
+              onClick={() => setLocateError(null)}
+              className="mt-2 text-muted underline hover:text-foreground"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
         <WeatherButton weather={weather} />
         {selected && (
           <PatioDetailCard
