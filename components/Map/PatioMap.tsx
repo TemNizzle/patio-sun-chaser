@@ -7,6 +7,7 @@ import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
 import { STATUS_META } from "@/lib/format";
 import { TORONTO_COORDS } from "@/lib/constants";
+import { readCamera, writeCamera } from "@/lib/map-camera";
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -16,7 +17,10 @@ interface Props {
   cloudCoverPercent?: number;
   selectedId?: string;
   onSelect: (id: string) => void;
-  userLocation: { lat: number; lng: number } | null;
+  /** Hands the parent a function that starts geolocation, so the app's own
+   *  button can drive the Mapbox control. */
+  onLocateReady?: (trigger: () => void) => void;
+  onLocateError?: (message: string) => void;
 }
 
 function dotEl(color: string, ring: boolean): HTMLDivElement {
@@ -37,29 +41,72 @@ export function PatioMap({
   cloudCoverPercent,
   selectedId,
   onSelect,
-  userLocation,
+  onLocateReady,
+  onLocateError,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map());
-  const userMarkerRef = useRef<mapboxgl.Marker | null>(null);
+  const geolocateRef = useRef<mapboxgl.GeolocateControl | null>(null);
   const readyRef = useRef(false);
+  const onLocateErrorRef = useRef(onLocateError);
+
+  // Keep the newest error callback reachable from the map's own listener
+  // without re-running the init effect.
+  useEffect(() => {
+    onLocateErrorRef.current = onLocateError;
+  }, [onLocateError]);
 
   // Init map once.
   useEffect(() => {
     if (!TOKEN || !containerRef.current || mapRef.current) return;
     mapboxgl.accessToken = TOKEN;
 
+    // Resume where this tab left off; the map is destroyed on unmount and
+    // mobile browsers reload backgrounded pages, which otherwise dumps the
+    // user back downtown.
+    const saved = readCamera();
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: "mapbox://styles/mapbox/light-v11",
-      center: [TORONTO_COORDS.lng, TORONTO_COORDS.lat],
-      zoom: 14,
-      pitch: 55,
-      bearing: -18,
+      center: saved?.center ?? [TORONTO_COORDS.lng, TORONTO_COORDS.lat],
+      zoom: saved?.zoom ?? 14,
+      pitch: saved?.pitch ?? 55,
+      bearing: saved?.bearing ?? -18,
       antialias: true,
     });
     mapRef.current = map;
+
+    const persist = () => {
+      const c = map.getCenter();
+      writeCamera({
+        center: [c.lng, c.lat],
+        zoom: map.getZoom(),
+        bearing: map.getBearing(),
+        pitch: map.getPitch(),
+      });
+    };
+    map.on("moveend", persist);
+
+    // showButton: false because the right rail already carries the app's own
+    // "Find me" and weather buttons; HomeView drives this via trigger().
+    const geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: true, timeout: 8000 },
+      trackUserLocation: true,
+      showAccuracyCircle: true,
+      showUserLocation: true,
+      showButton: false,
+    });
+    geolocateRef.current = geolocate;
+    map.addControl(geolocate);
+
+    geolocate.on("error", (err: GeolocationPositionError) => {
+      onLocateErrorRef.current?.(
+        err.code === err.PERMISSION_DENIED
+          ? "Location permission is off. Enable it in your browser settings to see patios near you."
+          : "Couldn't get your location. Try again in a moment."
+      );
+    });
 
     map.on("load", () => {
       // 3D building extrusion for the tilted, massing look.
@@ -89,8 +136,10 @@ export function PatioMap({
     });
 
     return () => {
+      map.off("moveend", persist);
       map.remove();
       mapRef.current = null;
+      geolocateRef.current = null;
       readyRef.current = false;
       markersRef.current.clear();
     };
@@ -141,21 +190,11 @@ export function PatioMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patios, at, cloudCoverPercent, selectedId]);
 
-  // User location marker.
+  // Hand the trigger up so the app's own button can start geolocation.
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !userLocation) return;
-    if (userMarkerRef.current) {
-      userMarkerRef.current.setLngLat([userLocation.lng, userLocation.lat]);
-    } else {
-      const el = dotEl("#2f6fed", false);
-      el.style.border = "3px solid #ffffff";
-      userMarkerRef.current = new mapboxgl.Marker({ element: el })
-        .setLngLat([userLocation.lng, userLocation.lat])
-        .addTo(map);
-    }
-    map.easeTo({ center: [userLocation.lng, userLocation.lat], zoom: 16, duration: 600 });
-  }, [userLocation]);
+    if (!TOKEN || !onLocateReady) return;
+    onLocateReady(() => geolocateRef.current?.trigger());
+  }, [onLocateReady]);
 
   // Pan to selected patio.
   useEffect(() => {
