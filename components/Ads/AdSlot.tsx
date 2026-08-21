@@ -14,7 +14,7 @@ export function AdSlot({ placement }: { placement: Placement }) {
         <div className="font-semibold uppercase tracking-wide">Advertisement</div>
         <div className="mt-1">
           Reach sun-chasers here.{" "}
-          <a href="mailto:ads@patiosunchaser.com" className="text-accent underline">
+          <a href="mailto:d.vidal@outlook.com" className="text-accent underline">
             Advertise with us
           </a>
         </div>
