@@ -178,6 +178,35 @@ seed and the citywide Apify export before adding anything new.
   Hotel) and are good candidates to prioritize in the next `/admin/orientation`
   pass, since rooftop typically means `OPEN_SKY`/low obstruction.
 
+## User-curated name-list batch (32 patios)
+
+A second batch, sourced from a raw list of ~37 venue names the user typed
+directly (no article links) rather than scraped from a source. Same dedup +
+verification process as the article batch above:
+
+- **7 records** (National Toronto, Fox on John, RendezViews, Grape Witches at
+  Waterworks, Evangeline, LOCAL Public Eatery Adelaide, Steam Whistle Tap
+  Room) matched the unused citywide Apify export — `source: "apify"`, real
+  `placeId`, hours normalized from the raw per-day data. Steam Whistle had two
+  candidate records at the same complex (Tap Room vs. Kitchen); Tap Room was
+  chosen as the better fit for a beer-garden-style patio.
+- **25 records** — fresh web-verified lookups, `source: "manual"`. One name
+  ("Proper") didn't turn up in initial research; the user supplied the
+  correct address (392 Roncesvalles Ave) directly, and its hours were pulled
+  from public listings rather than left unknown.
+- A handful of names from the user's list were already in the dataset and
+  skipped entirely: Hemingway's, DROM Taberna, Bar Eugenie, The Pilot, Kasa
+  Moto, and "Broadview Hotel" (already covered by the article batch's
+  "Rooftop at Broadview Hotel").
+- Two candidates were flagged as borderline category fits — a retail wine
+  shop (Grape Witches) and a grocery/bodega concept far outside the rest of
+  the dataset's geographic cluster (Bodega by City Cottage, Scarborough) —
+  and both were included at the user's explicit direction despite the
+  mismatch, so don't "clean these up" later without checking back first.
+- Same as above: **no exposure data** yet, default `obstructionFactor: 0.5`,
+  `exposureSource: "manual"`. Drake Sky Yard and Pauper's Pub are explicitly
+  rooftop/dual-patio venues worth prioritizing in the orientation pass.
+
 ## Future: full-city Apify import
 
 The rest of the 1105-place export (beyond King/Queen) is still sitting in
