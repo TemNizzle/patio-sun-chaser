@@ -145,6 +145,39 @@ default `obstructionFactor: 0.5` and no `orientation`/`sunStartsAt`/
 `sunEndsAt`, so these read as low-confidence/shaded until validated in person
 and updated (see the main README for how to edit a patio's exposure by hand).
 
+## "Best patios" article batch (35 patios)
+
+Sourced from 5 published "best Toronto patios" roundup articles (waterfront,
+rooftop, and Bloor-Yorkville lists), cross-checked against both the existing
+seed and the citywide Apify export before adding anything new.
+
+- **5 records** (The Porch, Cibo Wine Bar King West, Kost, Bar Caña "The Roof
+  at SOCO", Harriet's Rooftop) turned out to already exist in the unused
+  citywide Apify export — `source: "apify"`, real `placeId` as `id`, `hours`
+  normalized the same way as the King/Queen batch. Two of these needed manual
+  disambiguation: the article's "SOCO Kitchen + Bar" mapped to the rooftop
+  bar record (Bar Caña), not the ground-floor restaurant, since the article
+  was describing the rooftop patio; Harriet's Rooftop had two near-duplicate
+  Google Places records ~50m apart at the same address, and the restaurant
+  ("Ste C") record was kept.
+- **30 records** had no match anywhere in existing data — `source: "manual"`,
+  `id`/`slug` both slugified from the name (no `placeId` available). Address
+  and coordinates were verified via web search + Mapbox geocoding, not taken
+  as-is from the source articles (two article addresses were wrong outright:
+  Amsterdam Brewhouse's "45 Esandar Dr" and Dimmi's "Old York Lane" — both
+  corrected). Venues confirmed permanently closed (Chabrol, La Société,
+  Firkin on Bloor, The One Eighty) were dropped rather than added. Two
+  borderline candidates (Scollard Deli — likely just a convenience store;
+  Windsor Arms — a hotel without a standalone bar/restaurant patio) were
+  excluded as a judgment call.
+- Like the King/Queen batch, **no exposure data** — default
+  `obstructionFactor: 0.5`, `exposureSource: "manual"`, no
+  `orientation`/`sunStartsAt`/`sunEndsAt` yet. Several of these are
+  explicitly rooftop venues (Bar Caña, Kost, Writers Room Bar, Stock T.C.,
+  Valerie, Kasa Moto, The Pilot, Trattoria Nervosa, Rooftop at Broadview
+  Hotel) and are good candidates to prioritize in the next `/admin/orientation`
+  pass, since rooftop typically means `OPEN_SKY`/low obstruction.
+
 ## Future: full-city Apify import
 
 The rest of the 1105-place export (beyond King/Queen) is still sitting in
