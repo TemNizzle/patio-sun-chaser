@@ -438,5 +438,396 @@
     "orientation": "S",
     "obstructionFactor": 0.3,
     "verifiedAt": "2026-08-20T18:25:37.031Z"
+  },
+  "ChIJW2EjTNA0K4gRc2nJzjlHXqI": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "The Porch: 2nd-floor elevated patio over Adelaide St W, taller building close on north side"
+  },
+  "ChIJfYcPrt40K4gRZwhcYtUPVTw": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z"
+  },
+  "ChIJ1ZnKOgA1K4gR85c2fvBfKro": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Bisha Hotel rooftop pool deck; a taller tower is visible at distance to the NE"
+  },
+  "ChIJBzHch_A1K4gRyXeB9cjt-L8": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "SOCO rooftop deck, South Core; no dominating taller neighbor visible"
+  },
+  "ChIJ6bEPOvk1K4gRHjhvwW3VTS0": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Rooftop restaurant flanked by similar-height buildings east/west"
+  },
+  "simona": {
+    "orientation": "SE",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Merchants' Wharf, directly on the lake"
+  },
+  "irene": {
+    "orientation": "S",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Dockside Dr, harbour-adjacent"
+  },
+  "goodman-pub-and-kitchen": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Bayside Toronto complex courtyard; shares building/coords with Joe Bird and Pie Bar, indistinguishable from imagery"
+  },
+  "joe-bird": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Bayside Toronto complex; same building as Goodman Pub and Kitchen"
+  },
+  "pie-bar": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Bayside Toronto complex; same building as Goodman Pub and Kitchen"
+  },
+  "amsterdam-brewhouse": {
+    "orientation": "S",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Open lakefront plaza at Queens Quay"
+  },
+  "bobby-bermuda-s-sunset-bar": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Shares building/coords with Boxcar Social Harbourfront"
+  },
+  "boxcar-social-harbourfront": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Shares building/coords with Bobby Bermuda's Sunset Bar"
+  },
+  "glb-brewpub": {
+    "orientation": "NE",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Green roof deck, flanked by adjacent building volumes"
+  },
+  "nba-courtside-restaurant": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Flanked by similar-height neighboring buildings"
+  },
+  "miller-tavern": {
+    "orientation": "SW",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Podium terrace near Bay St curve; taller tower visible to NE"
+  },
+  "firkin-on-harbour": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:05:28.110Z",
+    "notes": "Open rooftop pool-deck terrace"
+  },
+  "the-fox-on-bay": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Wide street (Bay St) to the west; dense mid-rise block otherwise."
+  },
+  "shoeless-joe-s-queens-quay": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "North side of Queens Quay, open toward the harbour to the south."
+  },
+  "rooftop-at-broadview-hotel": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Rooftop atrium/skylight visible; surrounding buildings are lower-rise, no taller neighbor overshadowing."
+  },
+  "writers-room-bar": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "17th floor hotel rooftop terrace; a taller tower is visible to the north, so not full OPEN_SKY."
+  },
+  "stock-t-c": {
+    "orientation": "SE",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "2nd/3rd floor garden rooftop, not high enough to clear surrounding mid-rise buildings."
+  },
+  "valerie": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "28th floor at Hotel X; Exhibition Place grounds are low-rise/open on all sides."
+  },
+  "bar-reyna": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Dense Cumberland St block; open parking lot to the east."
+  },
+  "portici": {
+    "orientation": "NE",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Near a wide street/plaza to the northeast."
+  },
+  "dimmi-bar-and-trattoria": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Same block as Bar Reyna/Hemingway's; open lot to the west."
+  },
+  "dbar": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Four Seasons Hotel block; open plaza/crosswalk area to the south."
+  },
+  "the-pilot": {
+    "orientation": "W",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Rooftop 'Flight Deck' patio; large open lot/construction site to the west."
+  },
+  "hemingway-s": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Has 4 separate patios; this approximates the main building's best exposure (open lot to the west). Rooftop patio specifically may be more open."
+  },
+  "kasa-moto": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Rooftop patio; no dominant taller neighbor visible in this low-rise Yorkville block."
+  },
+  "one-restaurant": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Hazelton Hotel; landscaped rooftop terrace open toward a tree-lined street to the east."
+  },
+  "sassafraz": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Corner of Cumberland & Bellair; open toward the street/patio-umbrella row to the east."
+  },
+  "stk-steakhouse": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Green rooftop terrace; large dark open area to the west could be park/shadow, treated conservatively as Moderate."
+  },
+  "the-oxley": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T08:15:00.000Z",
+    "notes": "Dense Yorkville Ave block; open street intersection to the north."
+  },
+  "trattoria-nervosa": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Ground-level Yorkville Ave patio in a narrow N-S street canyon, buildings both sides. Venue also has a separate rooftop patio not distinguishable in this imagery, which would likely rate OPEN_SKY/0.9 if modeled separately."
+  },
+  "ChIJS2Y-BwA1K4gRjOdPL30L9Bs": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Dense South Core cluster adjacent to Rogers Centre; imagery dominated by the stadium roof, moderate confidence on precise street frontage."
+  },
+  "ChIJe666YNA0K4gRgPfziT7HLp0": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "ChIJJQsuwr41K4gRXwW0wXHrE9U": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Rooftop patio (colorful painted deck visible); a taller neighboring tower to the east clips some afternoon sun."
+  },
+  "ChIJpe-tM0E1K4gR7tH8dWlJwvs": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "ChIJ2xgzwJA1K4gR3rQ1rLdyZGc": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "ChIJ6bm7PPA1K4gRRtyCbgLhJMM": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "ChIJWz4KNfU3K4gRbPWcbUp5KFQ": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Patio umbrellas visible beside the brewery's curved roof, open plaza to the east."
+  },
+  "paris-paris": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "bellwoods-brewery": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "el-catrin": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Distillery District courtyard, low heritage buildings around."
+  },
+  "the-dirty-laundry": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "downtown-winery": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "paradise-grapevine": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "pennies": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Liberty Village corner lot, fairly open surroundings."
+  },
+  "george": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z",
+    "notes": "Back courtyard/deck tucked between heritage buildings."
+  },
+  "daisy-may-s": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T00:00:00.000Z"
+  },
+  "cafe-diplomatico": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Rooftop-style patio canopy fronting College St to the south; typical dense Little Italy strip."
+  },
+  "bandit-brewery": {
+    "orientation": "N",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Large low-rise industrial building fronting Dundas St W to the north; front patio faces the wide street."
+  },
+  "the-three-speed": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Adjacent open/staging lot to the east; patio is described as enclosed with a fireplace, so moderate obstruction despite the opening."
+  },
+  "drake-sky-yard": {
+    "orientation": "OPEN_SKY",
+    "obstructionFactor": 0.9,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Confirmed rooftop deck (Drake Hotel Sky Yard); no taller adjacent building overshadowing it in imagery."
+  },
+  "bar-neon": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Fronts Bloor St W to the south; typical low-rise commercial strip with buildings across the street."
+  },
+  "pauper-s-pub": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Ground-level/sidewalk patio faces Bloor St W to the north. Also has a separate rooftop patio (likely OPEN_SKY/0.9) not distinguished here since it's one listing."
+  },
+  "sweaty-betty-s": {
+    "orientation": "E",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Large open/vacant lot immediately to the east gives good open sky beyond the narrow Ossington Ave storefront."
+  },
+  "actinolite": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Fronts Ossington Ave to the west; mid-block low-rise mixed residential/commercial strip."
+  },
+  "madison-avenue-pub": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Multi-level patio complex (5 levels per research) with visible rooftop seating; heavy tree canopy on most sides but a parking-lot opening to the west."
+  },
+  "c-est-what": {
+    "orientation": "N",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Fronts an open plaza/intersection near Front St E to the north; decent open sky for a dense downtown block."
+  },
+  "factory-girl": {
+    "orientation": "N",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Attached rowhouse-style storefront fronting Danforth Ave to the north; dense commercial strip."
+  },
+  "maison-selby": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Street-side courtyard patio faces Sherbourne St to the east. The Selby Hotel's rooftop garden terrace next door is a separate, more open space if it's ever added as its own listing."
+  },
+  "done-right-inn": {
+    "orientation": "S",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Secluded back patio behind the building to the south, shaded by a large mature tree."
+  },
+  "toronto-beach-club": {
+    "orientation": "S",
+    "obstructionFactor": 0.7,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Large ground-level lakeside patio faces south toward the lake/boardwalk; light tree cover nearby."
+  },
+  "bodega-by-city-cottage": {
+    "orientation": "E",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Fronts Kingston Rd to the east; mid-block Scarborough commercial strip."
+  },
+  "proper": {
+    "orientation": "W",
+    "obstructionFactor": 0.5,
+    "verifiedAt": "2026-08-26T12:00:00.000Z",
+    "notes": "Back patio faces west/rear, away from the Roncesvalles Ave frontage; low-rise mixed-density strip."
   }
 }

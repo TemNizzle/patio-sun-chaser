@@ -207,6 +207,41 @@ verification process as the article batch above:
   `exposureSource: "manual"`. Drake Sky Yard and Pauper's Pub are explicitly
   rooftop/dual-patio venues worth prioritizing in the orientation pass.
 
+## Orientation pass for both new batches (67 patios)
+
+Immediately after the two batches above landed, all 67 of their patios (the
+35 article-batch + 32 name-list-batch entries — everything lacking a curated
+window or existing override) went through an orientation pass, the same as
+the original King/Queen batch: satellite imagery judged for compass
+orientation + obstruction tier, written to `data/orientations.json` via the
+same `OrientationOverride` shape the `/admin/orientation` tool produces.
+
+This pass judged imagery directly rather than using the interactive
+`/admin/orientation` UI — same north-up, zoom-locked Mapbox satellite view,
+same 4-tier obstruction scale, same output shape, just driven programmatically
+across all 67 at once instead of one keystroke at a time. A few venues needed
+judgment calls documented here rather than in commit history:
+
+- Confirmed/named rooftop patios (Bar Caña, Kost, Rooftop at Broadview Hotel,
+  Valerie, Kasa Moto, The Pilot, Drake Sky Yard, and others) were defaulted
+  to `OPEN_SKY` at the Open tier unless imagery showed a taller adjacent
+  building that would plausibly overshadow them (e.g. Stock T.C. and Writers
+  Room Bar were judged to have taller neighbors, so they got a direction +
+  lower tier instead of a blanket `OPEN_SKY`).
+- Venues with **multiple physical patios** (Trattoria Nervosa, Hemingway's,
+  Pauper's Pub — each has a rooftop *and* a separate ground-level patio;
+  Madison Avenue Pub has 5 patio levels) were judged only for their
+  ground-level/primary space from satellite imagery, since a rooftop's real
+  exposure can't be read from a top-down building-footprint image. The
+  rooftop option on these is very likely better (`OPEN_SKY`/Open) than what's
+  recorded — worth a manual look via `/admin/orientation` if these come up as
+  false "shaded" results later.
+- After this pass, **all 173 patios in the dataset have some orientation
+  coverage** (18 hand-curated inline + 155 in `data/orientations.json`) — the
+  same "0 missing" state the original King/Queen batch reached. None of this
+  data has been in-person/phone verified yet, so it all still carries
+  `exposureSource: "satellite-estimated"`, one tier below `"verified"`.
+
 ## Future: full-city Apify import
 
 The rest of the 1105-place export (beyond King/Queen) is still sitting in
