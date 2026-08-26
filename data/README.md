@@ -145,6 +145,103 @@ default `obstructionFactor: 0.5` and no `orientation`/`sunStartsAt`/
 `sunEndsAt`, so these read as low-confidence/shaded until validated in person
 and updated (see the main README for how to edit a patio's exposure by hand).
 
+## "Best patios" article batch (35 patios)
+
+Sourced from 5 published "best Toronto patios" roundup articles (waterfront,
+rooftop, and Bloor-Yorkville lists), cross-checked against both the existing
+seed and the citywide Apify export before adding anything new.
+
+- **5 records** (The Porch, Cibo Wine Bar King West, Kost, Bar Caña "The Roof
+  at SOCO", Harriet's Rooftop) turned out to already exist in the unused
+  citywide Apify export — `source: "apify"`, real `placeId` as `id`, `hours`
+  normalized the same way as the King/Queen batch. Two of these needed manual
+  disambiguation: the article's "SOCO Kitchen + Bar" mapped to the rooftop
+  bar record (Bar Caña), not the ground-floor restaurant, since the article
+  was describing the rooftop patio; Harriet's Rooftop had two near-duplicate
+  Google Places records ~50m apart at the same address, and the restaurant
+  ("Ste C") record was kept.
+- **30 records** had no match anywhere in existing data — `source: "manual"`,
+  `id`/`slug` both slugified from the name (no `placeId` available). Address
+  and coordinates were verified via web search + Mapbox geocoding, not taken
+  as-is from the source articles (two article addresses were wrong outright:
+  Amsterdam Brewhouse's "45 Esandar Dr" and Dimmi's "Old York Lane" — both
+  corrected). Venues confirmed permanently closed (Chabrol, La Société,
+  Firkin on Bloor, The One Eighty) were dropped rather than added. Two
+  borderline candidates (Scollard Deli — likely just a convenience store;
+  Windsor Arms — a hotel without a standalone bar/restaurant patio) were
+  excluded as a judgment call.
+- Like the King/Queen batch, **no exposure data** — default
+  `obstructionFactor: 0.5`, `exposureSource: "manual"`, no
+  `orientation`/`sunStartsAt`/`sunEndsAt` yet. Several of these are
+  explicitly rooftop venues (Bar Caña, Kost, Writers Room Bar, Stock T.C.,
+  Valerie, Kasa Moto, The Pilot, Trattoria Nervosa, Rooftop at Broadview
+  Hotel) and are good candidates to prioritize in the next `/admin/orientation`
+  pass, since rooftop typically means `OPEN_SKY`/low obstruction.
+
+## User-curated name-list batch (32 patios)
+
+A second batch, sourced from a raw list of ~37 venue names the user typed
+directly (no article links) rather than scraped from a source. Same dedup +
+verification process as the article batch above:
+
+- **7 records** (National Toronto, Fox on John, RendezViews, Grape Witches at
+  Waterworks, Evangeline, LOCAL Public Eatery Adelaide, Steam Whistle Tap
+  Room) matched the unused citywide Apify export — `source: "apify"`, real
+  `placeId`, hours normalized from the raw per-day data. Steam Whistle had two
+  candidate records at the same complex (Tap Room vs. Kitchen); Tap Room was
+  chosen as the better fit for a beer-garden-style patio.
+- **25 records** — fresh web-verified lookups, `source: "manual"`. One name
+  ("Proper") didn't turn up in initial research; the user supplied the
+  correct address (392 Roncesvalles Ave) directly, and its hours were pulled
+  from public listings rather than left unknown.
+- A handful of names from the user's list were already in the dataset and
+  skipped entirely: Hemingway's, DROM Taberna, Bar Eugenie, The Pilot, Kasa
+  Moto, and "Broadview Hotel" (already covered by the article batch's
+  "Rooftop at Broadview Hotel").
+- Two candidates were flagged as borderline category fits — a retail wine
+  shop (Grape Witches) and a grocery/bodega concept far outside the rest of
+  the dataset's geographic cluster (Bodega by City Cottage, Scarborough) —
+  and both were included at the user's explicit direction despite the
+  mismatch, so don't "clean these up" later without checking back first.
+- Same as above: **no exposure data** yet, default `obstructionFactor: 0.5`,
+  `exposureSource: "manual"`. Drake Sky Yard and Pauper's Pub are explicitly
+  rooftop/dual-patio venues worth prioritizing in the orientation pass.
+
+## Orientation pass for both new batches (67 patios)
+
+Immediately after the two batches above landed, all 67 of their patios (the
+35 article-batch + 32 name-list-batch entries — everything lacking a curated
+window or existing override) went through an orientation pass, the same as
+the original King/Queen batch: satellite imagery judged for compass
+orientation + obstruction tier, written to `data/orientations.json` via the
+same `OrientationOverride` shape the `/admin/orientation` tool produces.
+
+This pass judged imagery directly rather than using the interactive
+`/admin/orientation` UI — same north-up, zoom-locked Mapbox satellite view,
+same 4-tier obstruction scale, same output shape, just driven programmatically
+across all 67 at once instead of one keystroke at a time. A few venues needed
+judgment calls documented here rather than in commit history:
+
+- Confirmed/named rooftop patios (Bar Caña, Kost, Rooftop at Broadview Hotel,
+  Valerie, Kasa Moto, The Pilot, Drake Sky Yard, and others) were defaulted
+  to `OPEN_SKY` at the Open tier unless imagery showed a taller adjacent
+  building that would plausibly overshadow them (e.g. Stock T.C. and Writers
+  Room Bar were judged to have taller neighbors, so they got a direction +
+  lower tier instead of a blanket `OPEN_SKY`).
+- Venues with **multiple physical patios** (Trattoria Nervosa, Hemingway's,
+  Pauper's Pub — each has a rooftop *and* a separate ground-level patio;
+  Madison Avenue Pub has 5 patio levels) were judged only for their
+  ground-level/primary space from satellite imagery, since a rooftop's real
+  exposure can't be read from a top-down building-footprint image. The
+  rooftop option on these is very likely better (`OPEN_SKY`/Open) than what's
+  recorded — worth a manual look via `/admin/orientation` if these come up as
+  false "shaded" results later.
+- After this pass, **all 173 patios in the dataset have some orientation
+  coverage** (18 hand-curated inline + 155 in `data/orientations.json`) — the
+  same "0 missing" state the original King/Queen batch reached. None of this
+  data has been in-person/phone verified yet, so it all still carries
+  `exposureSource: "satellite-estimated"`, one tier below `"verified"`.
+
 ## Future: full-city Apify import
 
 The rest of the 1105-place export (beyond King/Queen) is still sitting in
