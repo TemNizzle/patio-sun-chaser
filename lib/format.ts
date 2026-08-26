@@ -106,7 +106,7 @@ export function exposureSourceNote(exposure: ExposureProfile): string | null {
         ? `Sun exposure verified in person on ${verifiedDate}.`
         : "Sun exposure verified in person.";
     case "satellite-estimated":
-      return "Sun exposure estimated from satellite imagery, not yet confirmed with staff.";
+      return "Sun exposure estimated from satellite imagery";
     case "manual":
       return null;
   }
