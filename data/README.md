@@ -1,5 +1,36 @@
 # Patio data
 
+## Runbook: common data tasks
+
+All patio data is checked-in source — there is no database and no CMS. Every
+change below is a code edit plus a commit.
+
+**Add a patio.** Append a record to `data/patios.seed.ts`. `id` must be unique
+(use the Google `placeId` if the patio came from the Apify export, otherwise a
+slugified name); `slug` is the URL segment, so it must be unique too and
+shouldn't change once a page is indexed. Set `exposure` to
+`{ obstructionFactor: 0.5, exposureSource: "manual" }` if you don't yet know
+its orientation, then record one with the tool below. Detail pages are
+statically generated, so a new patio needs a rebuild to appear.
+
+**Set or fix a patio's orientation.** Use `/admin/orientation` (see below) —
+it writes `data/orientations.json` for you. Commit that file.
+
+**Mark a patio as verified.** After confirming on site or by phone, set its
+`exposure` inline in `patios.seed.ts` with `exposureSource: "verified"` and a
+`verifiedAt` ISO timestamp, and **delete its entry from
+`orientations.json`** — otherwise the override wins and re-stamps it
+`satellite-estimated`.
+
+**Mark a patio sponsored.** Set `sponsored: true` plus a `sponsorRank` (lower
+sorts first) and optional `sponsorLabel`. Sorting lives in `lib/patios.ts`;
+there's no billing or ad-serving backend, this is presentation only.
+
+**Verify a data change.** `npm test` covers the merge logic and sun model but
+not the dataset's contents — nothing validates that a new record is
+well-formed, so run `npm run dev` and check the patio renders on the map, in
+the list, and on its own detail page.
+
 ## Schema
 
 Every patio conforms to the `Patio` type in [`lib/types.ts`](../lib/types.ts).
@@ -12,7 +43,7 @@ Key fields:
 | `hours`                   | Raw `"HH:mm-HH:mm"`. `"00:00-00:00"` means **unknown** (shown as blank). |
 | `exposure`                | How/when this patio gets sun (see below).                               |
 | `sponsored`, `sponsorRank`, `sponsorLabel` | Monetization. Sponsored patios sort first (lowest rank first). |
-| `source`                  | Provenance: `seed` \| `apify` \| `manual` \| `mockdata-csv`.            |
+| `source`                  | Provenance: `seed` \| `apify` \| `manual` \| `mockdata-csv`. Only `apify` and `manual` actually occur in the data; the other two are legacy values still in the type. |
 
 ### `ExposureProfile`
 
@@ -29,6 +60,13 @@ Exposure is derived two ways, in priority order (see `estimateExposure` in
 `sunStartsAt`/`sunEndsAt` *and* `orientation`, the window is used and
 orientation is silently ignored. Don't leave a stale/fake window in place
 after adding real orientation data, or the orientation never takes effect.
+
+> **Current state:** no patio in the dataset carries a sun window any more —
+> all 173 run on the orientation path. The window branch is still live code
+> (and still wins if you set one), but nothing exercises it today, so treat it
+> as the *legacy* path rather than the primary one. The
+> `applyOrientationOverrides` guard and its test exist to stop a
+> re-introduced window from silently shadowing collected orientation data.
 
 `preciseModelId` is a reserved swap point: when a real shadow-casting model
 (City of Toronto building footprints/heights) exists, records carrying it will
@@ -48,16 +86,33 @@ precision available at MVP stage:
 | Moderate   | 0.5                   | Buildings on one side (e.g. Horseshoe Tavern).     |
 | Heavy      | 0.3                   | Narrow gap, mostly enclosed.                       |
 
-Patios with an `orientation` but no in-person obstruction check yet default to
-**Moderate (0.5)** as a neutral placeholder (see the `satellite-estimated`
-batch below).
+The tier is judged per patio during the satellite pass; it is *not* left at a
+blanket default. Current spread across the merged dataset:
+
+| Tier     | Factor | Count |
+| -------- | ------ | ----- |
+| Open     | 0.9    | 22    |
+| Light    | 0.7    | 31    |
+| Moderate | 0.5    | 68    |
+| Heavy    | 0.3    | 52    |
+
+`OPEN_SKY` always forces 0.9 regardless of the selected tier (see `record()` in
+`components/Admin/OrientationTool.tsx`) — a rooftop can't be obstructed.
 
 ### Collecting orientation: `/admin/orientation`
 
 Run `npm run dev` and open `/admin/orientation` — a keyboard-driven entry tool
 over Mapbox satellite imagery, locked north-up and flat so the compass
 judgement stays correct. It lists every seed patio with no `orientation` and no
-curated window.
+curated window, and opens on the first one not yet recorded.
+
+> **The collection pass is done.** All 155 patios the tool queues already have
+> an entry in `orientations.json`, so a fresh run opens on the first record and
+> shows `155 saved` rather than any outstanding work. The tool is still the way
+> to *revise* a judgement (navigate with `→`/`Backspace`, press a new
+> direction — it overwrites in place) and the way to onboard any patios added
+> to the seed later. It needs `NEXT_PUBLIC_MAPBOX_TOKEN` set; without it the
+> page renders only a notice, since the satellite view is the whole point.
 
 Keys are positioned to match the compass, so judging a direction and pressing
 it are the same motion:
@@ -93,36 +148,73 @@ Every `ExposureProfile` declares where its data came from, via `exposureSource`:
 | `"satellite-estimated"`  | Orientation eyeballed from satellite/Street View.                 | 0.7        |
 | `"verified"`            | Confirmed directly — phone call or in-person, treated the same.  | 0.9        |
 
-`estimateExposure()` uses this to weight its confidence score for the curated
-sun-window branch (see `CONFIDENCE_BY_SOURCE` in `lib/sun-exposure.ts`), and it
-determines what disclaimer/confirmation text the detail page shows (see
-`exposureSourceNote` in `lib/format.ts`). `verifiedAt` (ISO date-time) records
-when a `"verified"` or `"satellite-estimated"` check happened.
+The Confidence column is `CONFIDENCE_BY_SOURCE` in `lib/sun-exposure.ts`.
+**It is only read in the curated-sun-window branch**, which no patio currently
+takes — so today `exposureSource` does *not* affect the confidence number the
+app serves. It still drives the disclaimer/confirmation text on the detail page
+(see `exposureSourceNote` in `lib/format.ts`), which is its only live effect.
 
-## Current seed data (`patios.seed.ts`)
+On the orientation path that every patio actually uses, confidence is derived
+geometrically instead:
 
-Hand-curated from the user's `mockdata.csv`. **Only genuine bars/restaurants**
-were kept — the CSV was assembled by keyword-matching "sun" in business
-names/addresses, so it also contained convenience stores, a childcare center,
-a blinds retailer, etc., which were dropped. Real `lat`/`lng`/`address`/`hours`
-are preserved; `sunStartsAt`/`sunEndsAt` carry the CSV's **synthetic**
-placeholder values (they cycle through only a few fixed times and are not from
-any real sun calculation), so every record is flagged
-`exposure.exposureSource: "mockdata-csv"` and `source: "mockdata-csv"`.
+- `OPEN_SKY` → confidence = `obstructionFactor` (always 0.9 in practice).
+- Within the arc → `centeredness × obstructionFactor`, floored at 0.1, where
+  `centeredness` falls from 1 at dead-on to 0 at the arc edge.
+- Outside the arc → flat 0.6, status `shaded`.
+- No orientation at all → 0.2 — currently unreachable, since every patio has one.
 
-### mockdata.csv → `Patio` mapping
+The arc is `DEFAULT_ARC_WIDTH_DEG = 140`, i.e. ±70° around the facing bearing.
+That's deliberately generous for a placeholder model; narrowing it is the
+cheapest knob to turn if patios read as sunny too early or too late.
 
-| CSV column                | `Patio` field                    |
-| ------------------------- | -------------------------------- |
-| `id`                      | `id`                             |
-| `name`                    | `name` (+ derived `slug`)        |
-| `lat`, `lng`              | `lat`, `lng`                     |
-| `address`                 | `address` (+ derived `neighborhood`) |
-| `hours`                   | `hours`                          |
-| `sun_starts_at`           | `exposure.sunStartsAt` (mock)    |
-| `sun_ends_at`             | `exposure.sunEndsAt` (mock)      |
-| —                         | `exposure.orientation` (curate later) |
-| —                         | `sponsored*` (set for a few demo rows) |
+`verifiedAt` (ISO date-time) records when a `"verified"` or
+`"satellite-estimated"` check happened; 156 of the 173 merged records carry one.
+
+## Current dataset
+
+**173 patios** across 28 neighborhoods, 2 of them flagged `sponsored`.
+
+By `source` (where the *record* came from) — note `source` alone doesn't
+identify a batch, since three separate batches contributed `apify` records.
+The `id` format is the reliable tell:
+
+| `source`   | `id` format            | Count | Batch                                              |
+| ---------- | ---------------------- | ----- | -------------------------------------------------- |
+| `"manual"` | short numeric (`"65"`) | 16    | Original `mockdata.csv` hand-curated set.           |
+| `"apify"`  | Google `placeId`       | 102   | King/Queen (90) + article batch (5) + name-list batch (7). |
+| `"manual"` | slugified name         | 55    | Article batch (30) + user name-list batch (25).     |
+
+By `exposure.exposureSource` **after** `orientations.json` is merged in — this
+is what the app actually serves:
+
+| `exposureSource`        | Count | Notes                                                     |
+| ----------------------- | ----- | ---------------------------------------------------------- |
+| `"satellite-estimated"` | 155   | Collected via `/admin/orientation`; carries `verifiedAt`.   |
+| `"verified"`            | 17    | Orientation hand-set in the seed (16 original CSV records + 1 apify). |
+| `"manual"`              | 1     | `charlotte-s-room` — the lone oddity: orientation set inline in the seed but never re-confirmed, so it has no override and keeps `manual`. |
+
+Categories: 100 restaurant, 64 bar, 6 brewery, 1 cafe, 2 other.
+
+Merged orientation spread — note it skews north, which reads oddly for a
+sun-patio dataset and is worth spot-checking against reality if the estimates
+start looking wrong: N 64, S 39, W 23, E 18, `OPEN_SKY` 16, SE 5, NE 3, NW 2.
+
+**No record carries `mockdata-csv` or a synthetic sun window any more** — the
+placeholder CSV times were fully replaced by the orientation pass.
+
+### History: `mockdata.csv` (superseded)
+
+The **16 short-numeric-id records** came from the user's `mockdata.csv`. **Only
+genuine bars/restaurants** were kept — the CSV was assembled by keyword-matching
+"sun" in business names/addresses, so it also contained convenience stores, a
+childcare center, a blinds retailer, etc., which were dropped. Real
+`lat`/`lng`/`address`/`hours` were preserved; the CSV's `sun_starts_at` /
+`sun_ends_at` were **synthetic** placeholders (cycling through a few fixed
+times, not from any real sun calculation) and were flagged
+`exposureSource: "mockdata-csv"` until real orientation data replaced them —
+all 16 are now `"verified"`. The CSV itself is no longer in the repo and
+nothing reads from it; this section exists only to explain the odd numeric
+`id`s. Everything below documents batches added after it.
 
 ## King St / Queen St batch (90 patios, `source: "apify"`)
 
@@ -140,10 +232,17 @@ untouched rather than re-added.
 `id` is the Google `placeId` (stable, guaranteed-unique). `hours` is
 normalized from Apify's per-day 12-hour `openingHours` array down to a single
 `"HH:mm-HH:mm"` range (the most common range across the week; `"00:00-00:00"`
-if none parsed). **No exposure data** — `exposureSource: "manual"` with
-default `obstructionFactor: 0.5` and no `orientation`/`sunStartsAt`/
-`sunEndsAt`, so these read as low-confidence/shaded until validated in person
-and updated (see the main README for how to edit a patio's exposure by hand).
+if none parsed).
+
+These records landed with **no exposure data** — `exposureSource: "manual"`,
+default `obstructionFactor: 0.5`, no `orientation`/`sunStartsAt`/`sunEndsAt`.
+They have since been covered by the satellite orientation pass and now serve as
+`satellite-estimated`. **None have been validated in person yet** — that was the
+original reason for picking a walkable strip, and it's still the highest-value
+next step on the data side. To upgrade one: confirm it on site, then move its
+entry out of `orientations.json` and into `patios.seed.ts` with
+`exposureSource: "verified"` (leaving it in both places is harmless but the
+override would win, re-stamping it `satellite-estimated`).
 
 ## "Best patios" article batch (35 patios)
 
@@ -244,9 +343,15 @@ judgment calls documented here rather than in commit history:
 
 ## Future: full-city Apify import
 
-The rest of the 1105-place export (beyond King/Queen) is still sitting in
-`data/dataset_crawler-google-places_2026-08-07_17-40-17-604.json`, unused —
-citywide expansion is a separate, larger decision (see the performance
-discussion around marker clustering / list virtualization before scaling
-much past this point). `scripts/import-apify.ts` (a stub) sketches the same
-mapping used for the King/Queen batch above for when that happens.
+Most of the 1105-place export is still sitting unused in
+`data/dataset_crawler-google-places_2026-08-07_17-40-17-604.json`. Only 102 of
+its records are in the dataset: the 90-strong King/Queen batch, plus 12 pulled
+out individually when the article and name-list batches turned out to match
+places already in the export.
+
+Citywide expansion is a separate, larger decision — settle the performance
+question first (marker clustering and list virtualization; 173 markers is fine,
+1105 is not) before scaling much past this point.
+`scripts/import-apify.ts` is **still a stub** — it documents the intended
+mapping but has no working implementation, so every batch so far was mapped by
+hand. Implementing it is a prerequisite for a citywide import.

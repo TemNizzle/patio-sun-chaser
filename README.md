@@ -26,6 +26,14 @@ sun will be there, so groups can plan their sun-chasing outings.
   spot. Only applies to "now"; previewing another time on the slider falls
   back to the pure sun-position model. See [`lib/weather.ts`](lib/weather.ts).
   The weather button (top-right of the map) shows the current reading.
+- **Map camera persistence + "find me"**: panning/zooming/rotating the map is
+  remembered for the tab session (`sessionStorage`, so it doesn't follow the
+  user across days) instead of snapping back to the Toronto default on every
+  reload — mobile browsers routinely reload backgrounded tabs. A
+  `GeolocateControl`-backed "find me" button centers on the user's real
+  location, with a denied/failed-permission message surfaced in the UI rather
+  than failing silently. See [`lib/map-camera.ts`](lib/map-camera.ts) and
+  [`components/Map/PatioMap.tsx`](components/Map/PatioMap.tsx).
 
 ## Getting started
 
@@ -33,11 +41,42 @@ sun will be there, so groups can plan their sun-chasing outings.
 npm install
 cp .env.example .env.local   # add a free Mapbox token to see the map
 npm run dev                  # http://localhost:3000
-npm test                     # sun-calculation unit tests
+npm test                     # unit + component test suite, see Testing below
+npm run lint                 # eslint
 npm run build                # production build (SSG for all patio pages)
 ```
 
 The list view works without a Mapbox token; only the map needs one.
+
+## Testing
+
+`npm test` runs the full Vitest suite (`vitest run`, jsdom environment, config
+in [`vitest.config.ts`](vitest.config.ts)). There's no e2e/browser suite yet —
+these are unit and component tests only, so still click through the app in a
+browser after any UI change.
+
+| File                                     | Covers                                                                                                                                                                                                    |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `__tests__/sun-exposure.test.ts`          | Sun position math (`getSunSnapshot`) against known Toronto solstice sunrise/sunset times; `estimateExposure`'s orientation-arc, curated-window, and cloud-cover logic; confidence-by-source weighting.       |
+| `__tests__/map-camera.test.ts`            | `readCamera`/`writeCamera` round-tripping, every malformed/out-of-range shape (rejected before it can reach Mapbox and crash the map), and storage-unavailable fallbacks.                                    |
+| `__tests__/patio-map-camera.test.tsx`     | Integration test for `PatioMap`'s camera + `GeolocateControl` wiring, with `mapbox-gl` mocked (the real map needs live network tiles, so it can't run in CI). Asserts default vs. restored camera, that moves get persisted, and that geolocation errors are surfaced rather than swallowed. |
+| `__tests__/orientation-overrides.test.ts` | `applyOrientationOverrides` — merging an override, leaving unmatched patios untouched, and refusing to apply an override onto a patio that already has a curated sun window (which would otherwise silently never take effect). |
+
+When adding a new `lib/` module with non-trivial logic (date/timezone math,
+storage parsing, data merging), add a matching Vitest file alongside these —
+that's the existing pattern to follow.
+
+## Admin / data-entry tools
+
+`/admin/orientation` (dev-only — run `npm run dev`, then open
+`http://localhost:3000/admin/orientation`; it 404s under
+`NODE_ENV=production`, including on any deployed Vercel build) is a
+keyboard-driven tool for eyeballing each patio's sun orientation from Mapbox
+satellite imagery. It writes to `data/orientations.json` in the repo working
+tree via `app/api/admin/orientations/route.ts`, which is why it can't run on a
+deployed host — there's no working tree to write to there. Full field-by-field
+docs, the keyboard layout, and how the data flows into `estimateExposure()`
+live in [`data/README.md`](data/README.md#collecting-orientation-adminorientation).
 
 ## Deploying to Vercel
 
@@ -57,20 +96,38 @@ Every push to `main` then auto-deploys, with preview deployments per branch/PR.
 
 ## Project structure
 
-| Path                          | Purpose                                             |
-| ----------------------------- | --------------------------------------------------- |
-| `lib/types.ts`                | `Patio` / `ExposureProfile` data model.             |
-| `lib/sun-exposure.ts`         | Sun position + exposure estimate (swappable model). |
-| `lib/patios.ts`               | Data access + sponsored-first sorting.              |
-| `data/patios.seed.ts`         | Seed dataset (curated from real Toronto spots).     |
-| `components/Map/`             | Mapbox map, markers, legend, detail card.           |
-| `components/List/`            | Directory list, cards, filters.                     |
-| `app/patios/[slug]/`          | SEO detail pages.                                   |
-| `scripts/import-apify.ts`     | Stub for importing a real scraped patio list.       |
+| Path                                    | Purpose                                                                 |
+| ---------------------------------------- | -------------------------------------------------------------------------- |
+| `lib/types.ts`                          | `Patio` / `ExposureProfile` data model.                                 |
+| `lib/sun-exposure.ts`                   | Sun position + exposure estimate (swappable model).                    |
+| `lib/patios.ts`                         | Data access (seed + orientation overrides merged) + sponsored-first sorting. |
+| `lib/orientation-overrides.ts`          | Merges `data/orientations.json` over the seed at read time.            |
+| `lib/weather.ts`                        | Open-Meteo cloud-cover fetch for the "sunny now" discount.              |
+| `lib/map-camera.ts`                     | Session-scoped map camera read/write, validated before reaching Mapbox. |
+| `lib/format.ts`                         | Status colors/labels, hours formatting, sun-window/source display text. |
+| `lib/site.ts`                           | Canonical site URL resolution for metadata.                             |
+| `lib/constants.ts`                      | Toronto coordinates + timezone.                                        |
+| `data/patios.seed.ts`                   | Seed dataset (curated from real Toronto spots + the King/Queen Apify batch). |
+| `data/orientations.json`                | Orientation overrides collected via `/admin/orientation`.               |
+| `components/Map/`                       | Mapbox map (camera + geolocation), markers, legend, header, detail card. |
+| `components/List/`                      | Directory list, cards, filters.                                        |
+| `components/DateTimePicker/`            | Date/time slider for previewing sun exposure at another time.          |
+| `components/PatioExposurePanel.tsx`     | Sun-status + time-slider block on a patio detail page.                 |
+| `components/Weather/WeatherButton.tsx`  | Current-weather readout button on the map.                             |
+| `components/Ads/`                       | Placeholder ad slot + sponsored badge (structure reserved, no real ad network wired in). |
+| `components/Admin/OrientationTool.tsx`  | Keyboard-driven orientation entry UI (see Admin tools above).           |
+| `components/HomeView.tsx`               | Top-level client component wiring map/list/filters/slider together.    |
+| `app/page.tsx`                          | Home route — fetches patios + weather, renders `HomeView`.             |
+| `app/patios/[slug]/`                    | SEO detail pages (SSG, revalidated daily since sun windows depend on the date). |
+| `app/admin/orientation/`                | Dev-only orientation entry tool page.                                  |
+| `app/api/admin/orientations/`           | Dev-only read/write API backing the orientation tool.                  |
+| `scripts/import-apify.ts`               | Stub for importing the remaining citywide scraped patio list.          |
 
 ## Roadmap
 
 - Real building-shadow modeling (City of Toronto footprints + heights).
-- Weather integration (cloud cover discounts "sunny now").
-- Import the full patio list from the Apify export.
+- In-person exposure validation for the King/Queen Apify batch (currently
+  `exposureSource: "manual"` with a neutral default — see [`data/README.md`](data/README.md)).
+- Import the full citywide patio list from the Apify export (needs marker
+  clustering / list virtualization first — see `data/README.md`).
 - Sponsored-search backend + real ad units (structure is already reserved).
