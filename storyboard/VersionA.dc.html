@@ -12,7 +12,7 @@
     body { margin: 0; background: #17120d; }
     a { color: #f59e0b; }
     a:hover { color: #fbbf24; }
-    .frame { position: relative; width: 310px; height: 551px; overflow: hidden; border: 1px solid #3a2f22; background: #eef2f7; }
+    .frame { box-sizing: border-box; position: relative; width: 310px; height: 551px; overflow: hidden; border: 1px solid #3a2f22; background: #eef2f7; }
     .scrim { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 18px 24px; background: linear-gradient(to top, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.75) 55%, rgba(10,8,6,0) 100%); }
     .oncam { font-family: 'Archivo Black', Archivo, sans-serif; color: #ffffff; line-height: 1.06; letter-spacing: -0.02em; text-wrap: balance; }
     .col { display: flex; flex-direction: column; gap: 14px; }
@@ -42,7 +42,7 @@
         <span style="background: #f59e0b; color: #17120d; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 15px; padding: 3px 11px; letter-spacing: 0.02em;">CUT A</span>
         <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a08e77;">Claim-forward &middot; screen-record led</span>
       </div>
-      <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 40px; line-height: 1; letter-spacing: -0.025em;">&ldquo;Every list tells you where.&rdquo;</div>
+      <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 40px; line-height: 1; letter-spacing: -0.025em;">&ldquo;Every patio list tells you where.&rdquo;</div>
     </div>
     <div style="display: flex; gap: 34px; padding-bottom: 4px;">
       <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -110,14 +110,14 @@
           <div class="dot" style="left: 128px; top: 160px; width: 13px; height: 13px; background: #f59e0b;"></div>
           <div class="dot" style="left: 196px; top: 112px; width: 13px; height: 13px; background: #ef4444;"></div>
           <div class="dot" style="left: 246px; top: 178px; width: 13px; height: 13px; background: #16a34a;"></div>
-          <div class="dot" style="left: 88px; top: 258px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 124px; top: 252px; width: 13px; height: 13px; background: #ef4444;"></div>
           <div class="dot" style="left: 168px; top: 288px; width: 13px; height: 13px; background: #f59e0b;"></div>
           <div class="dot" style="left: 252px; top: 296px; width: 13px; height: 13px; background: #ef4444;"></div>
-          <div class="dot" style="left: 58px; top: 356px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 118px; top: 356px; width: 13px; height: 13px; background: #f59e0b;"></div>
           <div class="dot" style="left: 208px; top: 372px; width: 13px; height: 13px; background: #ef4444;"></div>
         </div>
         <div class="apphdr"><span class="pill"><span style="color: #0369a1;">&#9788;</span>Sun Chaser</span></div>
-        <div style="position: absolute; left: 12px; top: 224px; background: rgba(255,255,255,0.88); border: 1px solid #dfe5ee; border-radius: 8px; padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; font-size: 8.5px; color: #1a2230;">
+        <div style="position: absolute; left: 12px; top: 224px; background: rgba(255,255,255,0.88); border: 1px solid #dfe5ee; border-radius: 8px; padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; font-size: 9.5px; color: #1a2230;">
           <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>Direct sun</div>
           <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>Shaded</div>
           <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a;"></span>No sun</div>
@@ -162,13 +162,13 @@
           <span style="font-size: 10px; font-weight: 700; color: #1a2230;">Preview sun at</span>
           <div style="display: flex; align-items: center; gap: 8px;">
             <div style="flex-grow: 1; height: 4px; border-radius: 2px; background: #dfe5ee; position: relative;">
-              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 72%; background: #0369a1; border-radius: 2px;"></div>
-              <div style="position: absolute; left: 72%; top: -5px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #0369a1; border: 2px solid #ffffff; box-shadow: 0 1px 3px rgba(26,34,48,0.35);"></div>
+              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 83%; background: #0369a1; border-radius: 2px;"></div>
+              <div style="position: absolute; left: 83%; top: -5px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #0369a1; border: 2px solid #ffffff; box-shadow: 0 1px 3px rgba(26,34,48,0.35);"></div>
             </div>
             <span style="font-size: 10px; font-weight: 600; color: #64748b; font-variant-numeric: tabular-nums;">7:00 PM</span>
           </div>
         </div>
-        <div style="position: absolute; left: 176px; top: 336px; display: flex; align-items: center; gap: 3px;">
+        <div style="position: absolute; left: 132px; top: 368px; display: flex; align-items: center; gap: 3px;">
           <svg width="46" height="18" viewBox="0 0 46 18" fill="none" stroke="#ef4444" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h38"></path><path d="M34 2l7 7-7 7"></path></svg>
         </div>
         <div class="scrim">
@@ -207,7 +207,7 @@
         <div class="chiprow"><span class="tc">0:13 &ndash; 0:18</span><span class="badge broll">B-roll</span></div>
         <div style="display: flex; flex-direction: column; gap: 5px;">
           <span class="lbl">Direction</span>
-          <span class="body">Shoot 45&ndash;75 min before sunset, camera into the sun so it flares. Handheld, one continuous move. No faces needed if that&#39;s easier.</span>
+          <span class="body">Shoot inside the golden-hour window on the production sheet, camera into the sun so it flares. Handheld, one continuous move. No faces needed if that&#39;s easier.</span>
         </div>
         <div class="textbox">
           <span class="lbl" style="color: #f59e0b;">On screen</span>
