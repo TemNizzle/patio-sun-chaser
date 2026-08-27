@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+  <style>
+    body { margin: 0; background: #17120d; }
+    a { color: #f59e0b; }
+    a:hover { color: #fbbf24; }
+    .frame { position: relative; width: 310px; height: 551px; overflow: hidden; border: 1px solid #3a2f22; background: #eef2f7; }
+    .scrim { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 18px 24px; background: linear-gradient(to top, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.75) 55%, rgba(10,8,6,0) 100%); }
+    .oncam { font-family: 'Archivo Black', Archivo, sans-serif; color: #ffffff; line-height: 1.06; letter-spacing: -0.02em; text-wrap: balance; }
+    .col { display: flex; flex-direction: column; gap: 14px; }
+    .notes { display: flex; flex-direction: column; gap: 12px; }
+    .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6d5e4c; }
+    .body { font-size: 13.5px; line-height: 1.5; color: #c3b3a0; text-wrap: pretty; }
+    .textbox { background: #211a12; border-left: 3px solid #f59e0b; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+    .textbox .t { font-size: 14px; line-height: 1.4; color: #f5ede1; font-weight: 600; }
+    .chiprow { display: flex; align-items: center; gap: 8px; }
+    .tc { font-size: 12px; font-weight: 700; color: #f59e0b; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+    .badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 7px; }
+    .screen { background: rgba(3,105,161,0.18); color: #7dd3fc; border: 1px solid rgba(3,105,161,0.5); }
+    .broll { background: rgba(245,158,11,0.16); color: #fbbf24; border: 1px solid rgba(245,158,11,0.45); }
+    .apphdr { position: absolute; top: 10px; left: 0; right: 0; display: flex; justify-content: center; }
+    .pill { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.88); border: 1px solid #dfe5ee; border-radius: 999px; padding: 5px 14px; font-family: Archivo, sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #1a2230; }
+    .dot { border-radius: 50%; border: 1.5px solid #ffffff; position: absolute; }
+    .bldg { position: absolute; background: #cbd3de; }
+    .guide { position: absolute; inset: 16px; border: 1.5px dashed rgba(255,255,255,0.4); }
+  </style>
+</helmet>
+
+<div style="width: 1760px; min-height: 1140px; box-sizing: border-box; background: #17120d; background-image: radial-gradient(90% 60% at 12% -10%, rgba(3,105,161,0.20) 0%, rgba(23,18,13,0) 65%); color: #f5ede1; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; padding: 44px 48px 52px; display: flex; flex-direction: column; gap: 30px;">
+
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; border-bottom: 1px solid #3a2f22; padding-bottom: 22px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div class="chiprow">
+        <span style="background: #f59e0b; color: #17120d; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 15px; padding: 3px 11px; letter-spacing: 0.02em;">CUT A</span>
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a08e77;">Claim-forward &middot; screen-record led</span>
+      </div>
+      <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 40px; line-height: 1; letter-spacing: -0.025em;">&ldquo;Every list tells you where.&rdquo;</div>
+    </div>
+    <div style="display: flex; gap: 34px; padding-bottom: 4px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span class="lbl">Runtime</span><span style="font-size: 18px; font-weight: 700; color: #f5ede1;">23 sec</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span class="lbl">Format</span><span style="font-size: 18px; font-weight: 700; color: #f5ede1;">9:16 &middot; 1080&times;1920</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span class="lbl">Audio</span><span style="font-size: 18px; font-weight: 700; color: #f5ede1;">Music, no VO</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px;">
+
+    <!-- A1 -->
+    <div class="col">
+      <div class="frame" style="background: #ffffff;">
+        <div style="position: absolute; inset: 0; padding: 26px 18px; display: flex; flex-direction: column; gap: 10px; filter: saturate(0.35);">
+          <div style="font-family: Georgia, serif; font-size: 21px; font-weight: 700; color: #1a2230; line-height: 1.15;">The 50 best patios in Toronto</div>
+          <div style="font-size: 10px; color: #64748b;">Updated this week</div>
+          <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 6px;">
+            <div style="display: flex; gap: 9px; align-items: center;"><div style="width: 52px; height: 40px; background: #cbd3de; flex-shrink: 0;"></div><div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;"><div style="height: 8px; background: #1a2230; opacity: 0.72; width: 82%;"></div><div style="height: 6px; background: #cbd3de; width: 52%;"></div></div></div>
+            <div style="display: flex; gap: 9px; align-items: center;"><div style="width: 52px; height: 40px; background: #cbd3de; flex-shrink: 0;"></div><div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;"><div style="height: 8px; background: #1a2230; opacity: 0.72; width: 68%;"></div><div style="height: 6px; background: #cbd3de; width: 44%;"></div></div></div>
+            <div style="display: flex; gap: 9px; align-items: center;"><div style="width: 52px; height: 40px; background: #cbd3de; flex-shrink: 0;"></div><div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;"><div style="height: 8px; background: #1a2230; opacity: 0.72; width: 90%;"></div><div style="height: 6px; background: #cbd3de; width: 58%;"></div></div></div>
+            <div style="display: flex; gap: 9px; align-items: center;"><div style="width: 52px; height: 40px; background: #cbd3de; flex-shrink: 0;"></div><div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;"><div style="height: 8px; background: #1a2230; opacity: 0.72; width: 74%;"></div><div style="height: 6px; background: #cbd3de; width: 48%;"></div></div></div>
+            <div style="display: flex; gap: 9px; align-items: center;"><div style="width: 52px; height: 40px; background: #cbd3de; flex-shrink: 0;"></div><div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;"><div style="height: 8px; background: #1a2230; opacity: 0.72; width: 86%;"></div><div style="height: 6px; background: #cbd3de; width: 40%;"></div></div></div>
+          </div>
+        </div>
+        <div style="position: absolute; right: 14px; top: 150px; display: flex; flex-direction: column; align-items: center; gap: 2px; opacity: 0.85;">
+          <svg width="26" height="52" viewBox="0 0 26 52" fill="none" stroke="#ef4444" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4v40"></path><path d="M6 37l7 7 7-7"></path></svg>
+        </div>
+        <div class="scrim">
+          <div class="oncam" style="font-size: 27px;">Every patio list<br>tells you <span style="color: #a08e77;">where.</span></div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="chiprow"><span class="tc">0:00 &ndash; 0:03</span><span class="badge screen">Screen</span></div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="lbl">Direction</span>
+          <span class="body">Thumb-scroll a patio roundup fast, then stop dead. Desaturate it in the edit &mdash; this is the boring world.</span>
+        </div>
+        <div class="textbox">
+          <span class="lbl" style="color: #f59e0b;">On screen</span>
+          <span class="t">Every patio list tells you where.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="col">
+      <div class="frame">
+        <div style="position: absolute; inset: 0; background: #eef2f7;">
+          <div class="bldg" style="left: 22px; top: 96px; width: 46px; height: 62px;"></div>
+          <div class="bldg" style="left: 84px; top: 128px; width: 38px; height: 44px;"></div>
+          <div class="bldg" style="left: 150px; top: 88px; width: 54px; height: 78px;"></div>
+          <div class="bldg" style="left: 224px; top: 140px; width: 42px; height: 52px;"></div>
+          <div class="bldg" style="left: 46px; top: 230px; width: 60px; height: 50px;"></div>
+          <div class="bldg" style="left: 138px; top: 244px; width: 48px; height: 66px;"></div>
+          <div class="bldg" style="left: 214px; top: 256px; width: 56px; height: 42px;"></div>
+          <div class="bldg" style="left: 30px; top: 330px; width: 44px; height: 40px;"></div>
+          <div class="bldg" style="left: 172px; top: 348px; width: 62px; height: 46px;"></div>
+          <div class="dot" style="left: 62px; top: 118px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 128px; top: 160px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 196px; top: 112px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 246px; top: 178px; width: 13px; height: 13px; background: #16a34a;"></div>
+          <div class="dot" style="left: 88px; top: 258px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 168px; top: 288px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 252px; top: 296px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 58px; top: 356px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 208px; top: 372px; width: 13px; height: 13px; background: #ef4444;"></div>
+        </div>
+        <div class="apphdr"><span class="pill"><span style="color: #0369a1;">&#9788;</span>Sun Chaser</span></div>
+        <div style="position: absolute; left: 12px; top: 224px; background: rgba(255,255,255,0.88); border: 1px solid #dfe5ee; border-radius: 8px; padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; font-size: 8.5px; color: #1a2230;">
+          <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>Direct sun</div>
+          <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>Shaded</div>
+          <div style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a;"></span>No sun</div>
+        </div>
+        <div class="scrim">
+          <div class="oncam" style="font-size: 27px;">None of them tell<br>you <span style="color: #f59e0b;">when.</span></div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="chiprow"><span class="tc">0:03 &ndash; 0:07</span><span class="badge screen">Screen</span></div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="lbl">Direction</span>
+          <span class="body">Hard cut to the live map, full colour. Let the red markers land before the text does &mdash; the colour is the reveal.</span>
+        </div>
+        <div class="textbox">
+          <span class="lbl" style="color: #f59e0b;">On screen</span>
+          <span class="t">None of them tell you when.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="col">
+      <div class="frame">
+        <div style="position: absolute; inset: 0; background: #eef2f7;">
+          <div class="bldg" style="left: 22px; top: 96px; width: 46px; height: 62px;"></div>
+          <div class="bldg" style="left: 84px; top: 128px; width: 38px; height: 44px;"></div>
+          <div class="bldg" style="left: 150px; top: 88px; width: 54px; height: 78px;"></div>
+          <div class="bldg" style="left: 224px; top: 140px; width: 42px; height: 52px;"></div>
+          <div class="bldg" style="left: 46px; top: 230px; width: 60px; height: 50px;"></div>
+          <div class="bldg" style="left: 138px; top: 244px; width: 48px; height: 66px;"></div>
+          <div class="dot" style="left: 62px; top: 118px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 128px; top: 160px; width: 13px; height: 13px; background: #16a34a;"></div>
+          <div class="dot" style="left: 196px; top: 112px; width: 13px; height: 13px; background: #ef4444;"></div>
+          <div class="dot" style="left: 246px; top: 178px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 88px; top: 258px; width: 13px; height: 13px; background: #f59e0b;"></div>
+          <div class="dot" style="left: 168px; top: 288px; width: 13px; height: 13px; background: #16a34a;"></div>
+          <div class="dot" style="left: 252px; top: 296px; width: 13px; height: 13px; background: #ef4444;"></div>
+        </div>
+        <div class="apphdr"><span class="pill"><span style="color: #0369a1;">&#9788;</span>Sun Chaser</span></div>
+        <div style="position: absolute; left: 14px; right: 14px; top: 300px; background: #ffffff; border: 1px solid #dfe5ee; border-radius: 10px; padding: 10px 11px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 10px; font-weight: 700; color: #1a2230;">Preview sun at</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="flex-grow: 1; height: 4px; border-radius: 2px; background: #dfe5ee; position: relative;">
+              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 72%; background: #0369a1; border-radius: 2px;"></div>
+              <div style="position: absolute; left: 72%; top: -5px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #0369a1; border: 2px solid #ffffff; box-shadow: 0 1px 3px rgba(26,34,48,0.35);"></div>
+            </div>
+            <span style="font-size: 10px; font-weight: 600; color: #64748b; font-variant-numeric: tabular-nums;">7:00 PM</span>
+          </div>
+        </div>
+        <div style="position: absolute; left: 176px; top: 336px; display: flex; align-items: center; gap: 3px;">
+          <svg width="46" height="18" viewBox="0 0 46 18" fill="none" stroke="#ef4444" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h38"></path><path d="M34 2l7 7-7 7"></path></svg>
+        </div>
+        <div class="scrim">
+          <div class="oncam" style="font-size: 25px;">173 patios.<br><span style="color: #f59e0b;">Drag the time.</span></div>
+          <div style="font-family: Archivo, sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); padding-top: 8px;">Red = in the sun right now</div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="chiprow"><span class="tc">0:07 &ndash; 0:13</span><span class="badge screen">Screen</span></div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="lbl">Direction &mdash; the money shot</span>
+          <span class="body">Slowly drag &ldquo;Preview sun at&rdquo; from 4&nbsp;PM to 8&nbsp;PM. Hold on the map so the whole city visibly turns red &rarr; amber &rarr; green. Give this beat the most time.</span>
+        </div>
+        <div class="textbox">
+          <span class="lbl" style="color: #f59e0b;">On screen</span>
+          <span class="t">173 patios. Drag the time.</span>
+          <span class="t" style="font-weight: 400; font-size: 12.5px; color: #a08e77;">sub: Red = in the sun right now</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="col">
+      <div class="frame" style="background: linear-gradient(168deg, #f7c66a 0%, #ef9a4a 38%, #c25a3a 72%, #6b2f2c 100%);">
+        <div class="guide"></div>
+        <div style="position: absolute; left: 0; right: 0; top: 128px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M21.6 12H19M5 12H2.4M18.8 5.2l-1.8 1.8M7 17l-1.8 1.8M18.8 18.8L17 17M7 7L5.2 5.2"></path></svg>
+          <span style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 11px; letter-spacing: 0.24em; color: rgba(255,255,255,0.92);">B-ROLL</span>
+          <span style="font-family: Archivo, sans-serif; font-size: 11.5px; line-height: 1.45; color: rgba(255,255,255,0.86); text-align: center; padding: 0 26px;">Low sun raking across a patio table. Two glasses, condensation, a friend mid-laugh. Shoot into the light.</span>
+        </div>
+        <div class="scrim">
+          <div class="oncam" style="font-size: 24px;">You don&#39;t need a<br>bathing suit to<br>spend time in the<br><span style="color: #fbbf24;">sun.</span></div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="chiprow"><span class="tc">0:13 &ndash; 0:18</span><span class="badge broll">B-roll</span></div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="lbl">Direction</span>
+          <span class="body">Shoot 45&ndash;75 min before sunset, camera into the sun so it flares. Handheld, one continuous move. No faces needed if that&#39;s easier.</span>
+        </div>
+        <div class="textbox">
+          <span class="lbl" style="color: #f59e0b;">On screen</span>
+          <span class="t">You don&#39;t need a bathing suit to spend time in the sun.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="col">
+      <div class="frame" style="background: linear-gradient(178deg, #8a4a35 0%, #4a2a2c 46%, #211a22 100%);">
+        <div style="position: absolute; left: 0; right: 0; top: 92px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 24px;">
+          <span style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 10px; letter-spacing: 0.24em; color: rgba(255,255,255,0.55);">B-ROLL</span>
+          <span style="font-family: Archivo, sans-serif; font-size: 11px; line-height: 1.45; color: rgba(255,255,255,0.6); text-align: center;">Dusk. A sweater going on. Glass set down. Phone face-down on the table.</span>
+        </div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 18px 26px; background: linear-gradient(to top, rgba(10,8,6,0.95) 0%, rgba(10,8,6,0.8) 60%, rgba(10,8,6,0) 100%); display: flex; flex-direction: column; gap: 14px;">
+          <div class="oncam" style="font-size: 26px;">Grab a friend.<br><span style="color: #f59e0b;">Chase the sun.</span></div>
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="background: #f59e0b; color: #17120d; font-family: 'Archivo Black', Archivo, sans-serif; font-size: 13px; padding: 9px 12px; text-align: center; letter-spacing: 0.01em;">[YOUR URL]</div>
+            <span style="font-family: Archivo, sans-serif; font-size: 11.5px; line-height: 1.4; color: rgba(255,255,255,0.85); text-align: center;">Drop your email &mdash; I&#39;ll send you<br>the sunny ones every Friday.</span>
+            <span style="font-family: Archivo, sans-serif; font-size: 11px; font-weight: 700; color: #ef4444; text-align: center; letter-spacing: 0.06em;">7 patio weekends left this year.</span>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="chiprow"><span class="tc">0:18 &ndash; 0:23</span><span class="badge broll">B-roll</span></div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="lbl">Direction</span>
+          <span class="body">Hold the URL on screen a full 3 sec &mdash; people need time to read and act. Scarcity line last, so it&#39;s the thought they leave with.</span>
+        </div>
+        <div class="textbox">
+          <span class="lbl" style="color: #f59e0b;">On screen</span>
+          <span class="t">Grab a friend. Chase the sun.</span>
+          <span class="t" style="font-weight: 400; font-size: 12.5px; color: #a08e77;">[YOUR URL] &middot; email for the Friday sun report &middot; 7 patio weekends left</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

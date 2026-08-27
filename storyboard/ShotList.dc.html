@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+  <style>
+    body { margin: 0; background: #17120d; }
+    a { color: #f59e0b; }
+    a:hover { color: #fbbf24; }
+    .sec { display: flex; flex-direction: column; gap: 16px; }
+    .sech { display: flex; align-items: center; gap: 12px; }
+    .secn { font-family: 'Archivo Black', Archivo, sans-serif; font-size: 13px; color: #17120d; background: #f59e0b; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sect { font-family: 'Archivo Black', Archivo, sans-serif; font-size: 22px; letter-spacing: -0.015em; color: #f5ede1; }
+    .row { display: flex; gap: 13px; align-items: flex-start; background: #211a12; border: 1px solid #3a2f22; padding: 13px 15px; }
+    .rown { font-size: 11px; font-weight: 700; color: #6d5e4c; font-variant-numeric: tabular-nums; padding-top: 2px; flex-shrink: 0; width: 20px; }
+    .rowb { display: flex; flex-direction: column; gap: 4px; flex-grow: 1; }
+    .rowt { font-size: 14.5px; font-weight: 600; color: #f5ede1; line-height: 1.35; }
+    .rowd { font-size: 13px; line-height: 1.5; color: #a08e77; text-wrap: pretty; }
+    .tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 7px; flex-shrink: 0; align-self: flex-start; }
+    .tscreen { background: rgba(3,105,161,0.18); color: #7dd3fc; border: 1px solid rgba(3,105,161,0.5); }
+    .tbroll { background: rgba(245,158,11,0.16); color: #fbbf24; border: 1px solid rgba(245,158,11,0.45); }
+    .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6d5e4c; }
+  </style>
+</helmet>
+
+<div style="width: 880px; min-height: 1520px; box-sizing: border-box; background: #17120d; background-image: radial-gradient(100% 55% at 85% -6%, rgba(22,163,74,0.14) 0%, rgba(23,18,13,0) 62%); color: #f5ede1; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; padding: 48px 44px 56px; display: flex; flex-direction: column; gap: 40px;">
+
+  <div style="display: flex; flex-direction: column; gap: 14px; border-bottom: 1px solid #3a2f22; padding-bottom: 24px;">
+    <span class="lbl">Production sheet</span>
+    <div style="font-family: 'Archivo Black', Archivo, sans-serif; font-size: 44px; line-height: 0.98; letter-spacing: -0.025em;">One evening.<br>Both cuts.</div>
+    <div style="font-size: 15px; line-height: 1.55; color: #a08e77; max-width: 620px; text-wrap: pretty;">
+      Cut A and Cut B share four of their nine shots. Book one golden hour at one patio, capture the screen work at home beforehand, and you have everything.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><span class="secn">1</span><span class="sect">Screen recordings &mdash; do these first, at home</span></div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div class="row"><span class="rown">S1</span><div class="rowb"><span class="rowt">The slow slider drag</span><span class="rowd">Map view. Drag &ldquo;Preview sun at&rdquo; from 4:00&nbsp;PM to 8:00&nbsp;PM over about 4 seconds. The whole city turning red&nbsp;&rarr;&nbsp;amber&nbsp;&rarr;&nbsp;green is the single most valuable frame you own &mdash; shoot it three times and keep the smoothest.</span></div><span class="tag tscreen">Cut A</span></div>
+      <div class="row"><span class="rown">S2</span><div class="rowb"><span class="rowt">Map cold open</span><span class="rowd">Land on the map with markers already loaded, legend visible. Two seconds, no gesture. Make sure enough markers are red &mdash; record on a genuinely sunny afternoon or the whole premise looks broken.</span></div><span class="tag tscreen">Cut A</span></div>
+      <div class="row"><span class="rown">S3</span><div class="rowb"><span class="rowt">&ldquo;Sunny now&rdquo; one-tap</span><span class="rowd">List view. Thumb taps the &ldquo;Sunny now&rdquo; filter, list snaps to red pills. One clean gesture, no scrolling afterwards.</span></div><span class="tag tscreen">Cut B</span></div>
+      <div class="row"><span class="rown">S4</span><div class="rowb"><span class="rowt">Listicle scroll</span><span class="rowd">Any patio roundup, thumb-scrolling fast then stopping. Desaturate in the edit. Don&#39;t let a publication&#39;s logo sit legibly on screen &mdash; frame it out or blur it.</span></div><span class="tag tscreen">Cut A</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><span class="secn">2</span><span class="sect">B-roll &mdash; one patio, one golden hour</span></div>
+    <div style="background: #1d1710; border: 1px solid #3a2f22; border-left: 3px solid #f59e0b; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+      <span class="lbl" style="color: #f59e0b;">Your window, computed for Toronto</span>
+      <span style="font-size: 15px; line-height: 1.5; color: #f5ede1;">Tomorrow (Aug&nbsp;28) golden hour runs <strong>7:21&nbsp;&ndash;&nbsp;7:59&nbsp;PM</strong>. It slides roughly two minutes earlier each day &mdash; by Sep&nbsp;19 it&#39;s 6:42&nbsp;&ndash;&nbsp;7:20&nbsp;PM. Be seated and rolling 20 minutes before it starts.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div class="row"><span class="rown">B1</span><div class="rowb"><span class="rowt">Cold interior</span><span class="rowd">Dim room, blinds shut, phone-light on a face, thumb scrolling. The only cold shot in either cut &mdash; shoot it any time, it doesn&#39;t need golden hour.</span></div><span class="tag tbroll">Cut B</span></div>
+      <div class="row"><span class="rown">B2</span><div class="rowb"><span class="rowt">Into the light</span><span class="rowd">Low sun raking a patio table &mdash; two glasses, condensation, long shadows. Shoot straight into the sun so it flares. This is the hero image of the whole idea.</span></div><span class="tag tbroll">Both</span></div>
+      <div class="row"><span class="rown">B3</span><div class="rowb"><span class="rowt">The friend</span><span class="rowd">Someone mid-laugh, sun on their face. Hands and a glass work if nobody wants to be on camera &mdash; don&#39;t skip the shot over it.</span></div><span class="tag tbroll">Both</span></div>
+      <div class="row"><span class="rown">B4</span><div class="rowb"><span class="rowt">Cocktail set down</span><span class="rowd">Close, shallow, drink placed on the table with the sun behind it. Get three takes &mdash; this is the shot most likely to be soft.</span></div><span class="tag tbroll">Both</span></div>
+      <div class="row"><span class="rown">B5</span><div class="rowb"><span class="rowt">Arriving</span><span class="rowd">Walking up to the patio, or sitting down. Handheld, moving. Fills the Cut&nbsp;B montage.</span></div><span class="tag tbroll">Cut B</span></div>
+      <div class="row"><span class="rown">B6</span><div class="rowb"><span class="rowt">Night cools off</span><span class="rowd">After sunset: sweater going on, phone turned face-down on the table. Hold the face-down phone &mdash; it&#39;s the closing image for both cuts.</span></div><span class="tag tbroll">Both</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><span class="secn">3</span><span class="sect">Capture settings</span></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="background: #211a12; border: 1px solid #3a2f22; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px;"><span class="rowt">Vertical, 1080&times;1920</span><span class="rowd">Everything shot 9:16 in camera. Never crop 16:9 down afterwards.</span></div>
+      <div style="background: #211a12; border: 1px solid #3a2f22; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px;"><span class="rowt">60&nbsp;fps for the slider</span><span class="rowd">The drag reads as stuttery at 30. Screen-record at 60 and keep it there.</span></div>
+      <div style="background: #211a12; border: 1px solid #3a2f22; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px;"><span class="rowt">Lock exposure outdoors</span><span class="rowd">Shooting into the sun, auto-exposure will pump on every reframe.</span></div>
+      <div style="background: #211a12; border: 1px solid #3a2f22; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px;"><span class="rowt">Text in the safe zone</span><span class="rowd">Keep captions clear of the bottom ~15% &mdash; the platform UI covers it.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><span class="secn">4</span><span class="sect">Build this before you post</span></div>
+    <div style="background: #1d1710; border: 1px solid #3a2f22; border-left: 3px solid #ef4444; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px;">
+      <span style="font-size: 15px; line-height: 1.55; color: #f5ede1; text-wrap: pretty;">Both cuts drive to a URL and ask for an email &mdash; and the app has no capture element today. Without it the video measures nothing, because clicks alone won&#39;t tell you whether anyone actually wants this.</span>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; gap: 10px; align-items: baseline;"><span style="color: #ef4444; font-weight: 700; font-size: 13px; flex-shrink: 0;">&mdash;</span><span class="rowd" style="color: #c3b3a0;">One field, email only, above the fold on the home view. Every extra field costs you conversions you can&#39;t afford at this volume.</span></div>
+        <div style="display: flex; gap: 10px; align-items: baseline;"><span style="color: #ef4444; font-weight: 700; font-size: 13px; flex-shrink: 0;">&mdash;</span><span class="rowd" style="color: #c3b3a0;">Make the promise concrete and matched to the video: &ldquo;The Friday sun report &mdash; which patios catch golden hour this weekend.&rdquo;</span></div>
+        <div style="display: flex; gap: 10px; align-items: baseline;"><span style="color: #ef4444; font-weight: 700; font-size: 13px; flex-shrink: 0;">&mdash;</span><span class="rowd" style="color: #c3b3a0;">Tag the inbound link per cut (<span style="color: #f5ede1;">?v=a</span> / <span style="color: #f5ede1;">?v=b</span>) and store it with the signup, or the A/B tells you nothing.</span></div>
+        <div style="display: flex; gap: 10px; align-items: baseline;"><span style="color: #ef4444; font-weight: 700; font-size: 13px; flex-shrink: 0;">&mdash;</span><span class="rowd" style="color: #c3b3a0;">Set <span style="color: #f5ede1;">NEXT_PUBLIC_SITE_URL</span> and get a domain before posting &mdash; a raw vercel.app link in a caption reads as unfinished.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sech"><span class="secn">5</span><span class="sect">Reading the A/B</span></div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div class="row"><span class="rown">&mdash;</span><div class="rowb"><span class="rowt">Post 48&ndash;72 hours apart, same weekday, same hour</span><span class="rowd">Two cuts on the same evening cannibalise each other and you learn nothing from either.</span></div></div>
+      <div class="row"><span class="rown">&mdash;</span><div class="rowb"><span class="rowt">Judge on sign-ups per 100 link clicks</span><span class="rowd">Views measure the thumbnail and the algorithm. Sign-ups measure the idea &mdash; that&#39;s the number that decides whether this is a business.</span></div></div>
+      <div class="row"><span class="rown">&mdash;</span><div class="rowb"><span class="rowt">Watch retention at 0:07</span><span class="rowd">Both cuts hand over to the product there. A cliff at that timestamp means the demo is the problem, not the hook.</span></div></div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
