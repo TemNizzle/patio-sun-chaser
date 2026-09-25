@@ -2687,4 +2687,24 @@ export const seedPatios: Patio[] = [
     sponsored: false,
     source: "manual",
   },
+  {
+    // Placeholder name: the business at this address wasn't confirmed yet.
+    id: "cafe-5-hillsdale",
+    slug: "cafe-5-hillsdale",
+    name: "Cafe at 5 Hillsdale Ave E",
+    address: "5 Hillsdale Ave E, Toronto, ON M4S 1T4, Canada",
+    neighborhood: "Yonge and Eglinton",
+    lat: 43.70365,
+    lng: -79.3972,
+    category: "cafe",
+    hours: "00:00-00:00",
+    exposure: {
+      orientation: "W",
+      obstructionFactor: 0.5,
+      exposureSource: "manual",
+      notes: "West-facing patio toward Yonge St at the Hillsdale corner.",
+    },
+    sponsored: false,
+    source: "manual",
+  },
 ];
