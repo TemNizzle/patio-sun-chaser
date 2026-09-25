@@ -2688,10 +2688,9 @@ export const seedPatios: Patio[] = [
     source: "manual",
   },
   {
-    // Placeholder name: the business at this address wasn't confirmed yet.
-    id: "cafe-5-hillsdale",
-    slug: "cafe-5-hillsdale",
-    name: "Cafe at 5 Hillsdale Ave E",
+    id: "sisters-cafe",
+    slug: "sisters-cafe",
+    name: "Sisters Cafe",
     address: "5 Hillsdale Ave E, Toronto, ON M4S 1T4, Canada",
     neighborhood: "Yonge and Eglinton",
     lat: 43.70365,
