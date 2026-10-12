@@ -153,13 +153,15 @@ export function PatioMap({
       renderMarkers();
     });
 
+    // The Map instance never changes; capture it so cleanup clears the same one.
+    const markers = markersRef.current;
     return () => {
       map.off("moveend", persist);
       map.remove();
       mapRef.current = null;
       geolocateRef.current = null;
       readyRef.current = false;
-      markersRef.current.clear();
+      markers.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
