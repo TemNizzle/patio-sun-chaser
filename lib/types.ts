@@ -1,3 +1,5 @@
+import type { CityId } from "@/lib/cities";
+
 export type Orientation =
   | "N"
   | "NE"
@@ -20,14 +22,22 @@ export type ExposureSource =
   | "satellite-estimated" // orientation eyeballed from satellite/Street View
   | "verified"; // confirmed directly — phone call or in-person, treated the same
 
+/**
+ * How much of the seating is under a roof or awning. Matters most near the
+ * equator, where the sun is often overhead and compass orientation says little.
+ */
+export type Coverage = "open" | "partial" | "roofed";
+
 export interface ExposureProfile {
+  /** Overhead cover. Absent means unknown; the orientation model is used as before. */
+  coverage?: Coverage;
   /** Which direction has open sky. Only used as a fallback when no manual sun window is set. */
   orientation?: Orientation;
   /** 0..1 fudge factor standing in for real building-shadow data. */
   obstructionFactor: number;
-  /** "HH:mm" Toronto local time — curated/mock daily sun window start. */
+  /** "HH:mm" local time in the patio's city — curated/mock daily sun window start. */
   sunStartsAt?: string;
-  /** "HH:mm" Toronto local time — curated/mock daily sun window end. */
+  /** "HH:mm" local time in the patio's city — curated/mock daily sun window end. */
   sunEndsAt?: string;
   notes?: string;
   /** Future swap-point flag: presence signals a precise shadow model should be used instead. */
@@ -44,9 +54,13 @@ export type PatioCategory =
   | "cafe"
   | "brewery"
   | "rooftop"
+  | "rum-shop"
+  | "beach-bar"
   | "other";
 
 export interface Patio {
+  /** Which city this venue belongs to. Absent means Toronto (the original dataset). */
+  city?: CityId;
   id: string;
   slug: string;
   name: string;

@@ -3,7 +3,8 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { Patio } from "@/lib/types";
 import type { WeatherSnapshot } from "@/lib/weather";
-import { estimateExposure } from "@/lib/sun-exposure";
+import { estimateExposure, modeMatchScore } from "@/lib/sun-exposure";
+import type { City, ViewMode } from "@/lib/cities";
 import { sortPatios, getNeighborhoods } from "@/lib/patios";
 import { PatioMap } from "@/components/Map/PatioMap";
 import { MapHeader } from "@/components/Map/MapHeader";
@@ -16,17 +17,20 @@ import { AdSlot } from "@/components/Ads/AdSlot";
 import { WeatherButton } from "@/components/Weather/WeatherButton";
 
 export function HomeView({
+  city,
   patios,
   weather,
 }: {
+  city: City;
   patios: Patio[];
   weather: WeatherSnapshot | null;
 }) {
   const [now, setNow] = useState(() => new Date());
   const [previewAt, setPreviewAt] = useState<Date | null>(null);
+  const [mode, setMode] = useState<ViewMode>(city.defaultMode);
   const [filters, setFilters] = useState<Filters>({
     neighborhood: "",
-    sunnyOnly: false,
+    matchOnly: false,
   });
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const [locateError, setLocateError] = useState<string | null>(null);
@@ -45,15 +49,17 @@ export function HomeView({
     if (filters.neighborhood) {
       list = list.filter((p) => p.neighborhood === filters.neighborhood);
     }
-    if (filters.sunnyOnly) {
+    if (filters.matchOnly) {
       list = list.filter(
         (p) =>
-          estimateExposure(p, now, weather?.cloudCoverPercent).status ===
-          "sunny"
+          modeMatchScore(
+            estimateExposure(p, now, weather?.cloudCoverPercent),
+            mode
+          ) > 0
       );
     }
-    return sortPatios(list, at, cloudCoverPercent);
-  }, [patios, filters, at, now, weather, cloudCoverPercent]);
+    return sortPatios(list, at, cloudCoverPercent, mode);
+  }, [patios, filters, at, now, weather, cloudCoverPercent, mode]);
 
   const selected = patios.find((p) => p.id === selectedId);
 
@@ -70,8 +76,9 @@ export function HomeView({
   return (
     <div className="flex flex-1 flex-col">
       <section className="relative h-[52vh] min-h-[360px] w-full overflow-hidden border-b border-border">
-        <MapHeader />
+        <MapHeader city={city} />
         <PatioMap
+          city={city}
           patios={visible}
           at={at}
           cloudCoverPercent={cloudCoverPercent}
@@ -80,7 +87,7 @@ export function HomeView({
           onLocateReady={handleLocateReady}
           onLocateError={setLocateError}
         />
-        <MapLegend />
+        <MapLegend mode={mode} />
         <button
           onClick={locate}
           className="absolute right-4 top-16 z-20 rounded-full border border-border bg-surface/90 px-3 py-2 text-xs font-medium shadow-sm backdrop-blur hover:border-accent/60"
@@ -101,7 +108,7 @@ export function HomeView({
             </button>
           </div>
         )}
-        <WeatherButton weather={weather} />
+        <WeatherButton weather={weather} city={city} />
         {selected && (
           <PatioDetailCard
             patio={selected}
@@ -112,7 +119,10 @@ export function HomeView({
 
       <section className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">
         <div className="mb-4 flex flex-col gap-3">
+          <ModeToggle mode={mode} onChange={setMode} />
           <SunTimeControl
+            timezone={city.timezone}
+            mode={mode}
             value={at}
             onChange={setPreviewAt}
             onReset={() => {
@@ -125,12 +135,16 @@ export function HomeView({
             neighborhoods={neighborhoods}
             filters={filters}
             onChange={(next) => {
-              if (next.sunnyOnly && !filters.sunnyOnly) {
+              if (next.matchOnly && !filters.matchOnly) {
                 setPreviewAt(null);
               }
               setFilters(next);
             }}
             resultCount={visible.length}
+            mode={mode}
+            allAreasLabel={city.areaAllLabel}
+            venueNoun={city.venueNoun}
+            venueNounPlural={city.venueNounPlural}
           />
         </div>
 
@@ -142,9 +156,47 @@ export function HomeView({
             cloudCoverPercent={cloudCoverPercent}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            mode={mode}
+            venueNounPlural={city.venueNounPlural}
           />
         </div>
       </section>
+    </div>
+  );
+}
+
+function ModeToggle({
+  mode,
+  onChange,
+}: {
+  mode: ViewMode;
+  onChange: (next: ViewMode) => void;
+}) {
+  const options: { value: ViewMode; label: string }[] = [
+    { value: "sun", label: "☀ Find sun" },
+    { value: "shade", label: "⛱ Find shade" },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label="What are you looking for?"
+      className="inline-flex w-fit rounded-full border border-border bg-surface p-0.5 text-sm"
+    >
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          aria-pressed={mode === o.value}
+          onClick={() => onChange(o.value)}
+          className={`rounded-full px-4 py-1.5 font-medium transition ${
+            mode === o.value
+              ? "bg-accent text-white"
+              : "text-muted hover:text-foreground"
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

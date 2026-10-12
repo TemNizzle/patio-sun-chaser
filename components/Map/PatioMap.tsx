@@ -6,12 +6,14 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
 import { STATUS_META } from "@/lib/format";
-import { TORONTO_COORDS } from "@/lib/constants";
+import { getCity, type City } from "@/lib/cities";
 import { readCamera, writeCamera } from "@/lib/map-camera";
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 interface Props {
+  /** City being viewed; sets the opening camera. Defaults to Toronto. */
+  city?: City;
   patios: Patio[];
   at: Date;
   cloudCoverPercent?: number;
@@ -36,6 +38,7 @@ function dotEl(color: string, ring: boolean): HTMLDivElement {
 }
 
 export function PatioMap({
+  city = getCity(),
   patios,
   at,
   cloudCoverPercent,
@@ -65,12 +68,12 @@ export function PatioMap({
     // Resume where this tab left off; the map is destroyed on unmount and
     // mobile browsers reload backgrounded pages, which otherwise dumps the
     // user back downtown.
-    const saved = readCamera();
+    const saved = readCamera(city.id);
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: "mapbox://styles/mapbox/light-v11",
-      center: saved?.center ?? [TORONTO_COORDS.lng, TORONTO_COORDS.lat],
-      zoom: saved?.zoom ?? 14,
+      center: saved?.center ?? [city.coords.lng, city.coords.lat],
+      zoom: saved?.zoom ?? city.mapZoom,
       pitch: saved?.pitch ?? 55,
       bearing: saved?.bearing ?? -18,
       antialias: true,
@@ -84,7 +87,7 @@ export function PatioMap({
         zoom: map.getZoom(),
         bearing: map.getBearing(),
         pitch: map.getPitch(),
-      });
+      }, city.id);
     };
     map.on("moveend", persist);
 

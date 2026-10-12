@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import type { Patio } from "@/lib/types";
+import type { ViewMode } from "@/lib/cities";
 import { PatioCard } from "@/components/List/PatioCard";
 import { AdSlot } from "@/components/Ads/AdSlot";
 
@@ -11,6 +12,8 @@ interface Props {
   cloudCoverPercent?: number;
   selectedId?: string;
   onSelect?: (id: string) => void;
+  mode?: ViewMode;
+  venueNounPlural?: string;
 }
 
 export function PatioList({
@@ -19,12 +22,15 @@ export function PatioList({
   cloudCoverPercent,
   selectedId,
   onSelect,
+  mode = "sun",
+  venueNounPlural = "patios",
 }: Props) {
   if (patios.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border bg-surface-muted p-8 text-center text-sm text-muted">
-        No patios match these filters. Try clearing the “sunny now” filter or
-        picking a different time of day.
+        No {venueNounPlural} match these filters. Try clearing the “
+        {mode === "shade" ? "shaded now" : "sunny now"}” filter or picking a
+        different time of day.
       </div>
     );
   }
@@ -39,6 +45,7 @@ export function PatioList({
             cloudCoverPercent={cloudCoverPercent}
             selected={patio.id === selectedId}
             onSelect={onSelect}
+            mode={mode}
           />
           {i === 3 && <AdSlot placement="list-inline" />}
         </Fragment>

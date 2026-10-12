@@ -11,7 +11,17 @@
  * expire with the tab, not follow the user back days later.
  */
 
+import { DEFAULT_CITY_ID, type CityId } from "@/lib/cities";
+
 const KEY = "psc:map:camera";
+
+/**
+ * One camera per city, or Barbados would reopen on a Toronto street. Toronto
+ * keeps the original key so stored cameras survive the upgrade.
+ */
+function keyFor(city: CityId): string {
+  return city === DEFAULT_CITY_ID ? KEY : `${KEY}:${city}`;
+}
 
 export interface Camera {
   center: [number, number];
@@ -44,10 +54,10 @@ function isAngle(v: unknown, max: number): v is number {
  * malformed. Never throws: storage access itself raises in some privacy modes,
  * and a broken camera must not take the map down with it.
  */
-export function readCamera(): Camera | null {
+export function readCamera(city: CityId = DEFAULT_CITY_ID): Camera | null {
   let raw: string | null;
   try {
-    raw = sessionStorage.getItem(KEY);
+    raw = sessionStorage.getItem(keyFor(city));
   } catch {
     return null;
   }
@@ -73,9 +83,12 @@ export function readCamera(): Camera | null {
 }
 
 /** Persist the camera. Silently does nothing if storage is unavailable. */
-export function writeCamera(camera: Camera): void {
+export function writeCamera(
+  camera: Camera,
+  city: CityId = DEFAULT_CITY_ID
+): void {
   try {
-    sessionStorage.setItem(KEY, JSON.stringify(camera));
+    sessionStorage.setItem(keyFor(city), JSON.stringify(camera));
   } catch {
     // Private browsing, blocked site data, quota — all non-fatal here.
   }

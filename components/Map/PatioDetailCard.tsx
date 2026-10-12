@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { Patio } from "@/lib/types";
 import { formatHours, patioSunWindow, mapsUrl } from "@/lib/format";
+import { venuePath, DEFAULT_CITY_ID } from "@/lib/cities";
 
 interface Props {
   patio: Patio;
@@ -19,7 +20,7 @@ export function PatioDetailCard({ patio, onClose }: Props) {
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <Link
-              href={`/patios/${patio.slug}`}
+              href={venuePath(patio.city ?? DEFAULT_CITY_ID, patio.slug)}
               className="text-lg font-bold text-foreground hover:underline"
             >
               {patio.name}

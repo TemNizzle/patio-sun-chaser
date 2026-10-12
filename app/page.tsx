@@ -1,11 +1,6 @@
-import { getAllPatios } from "@/lib/patios";
-import { getTorontoWeather } from "@/lib/weather";
-import { HomeView } from "@/components/HomeView";
+import { CityHome } from "@/components/CityHome";
+import { DEFAULT_CITY_ID } from "@/lib/cities";
 
-export default async function Home() {
-  const [patios, weather] = await Promise.all([
-    getAllPatios(),
-    getTorontoWeather(),
-  ]);
-  return <HomeView patios={patios} weather={weather} />;
+export default function Home() {
+  return <CityHome cityId={DEFAULT_CITY_ID} />;
 }

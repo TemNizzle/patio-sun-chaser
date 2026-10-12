@@ -1,5 +1,5 @@
 import overridesJson from "@/data/orientations.json";
-import type { Orientation, Patio } from "@/lib/types";
+import type { Coverage, Orientation, Patio } from "@/lib/types";
 
 /**
  * Orientation data collected with the /admin/orientation tool, kept out of
@@ -7,7 +7,9 @@ import type { Orientation, Patio } from "@/lib/types";
  * source. Merged over the seed at read time by lib/patios.ts.
  */
 export interface OrientationOverride {
-  orientation: Orientation;
+  /** Optional: coverage-only entries are enough where the sun is often overhead (Barbados). */
+  orientation?: Orientation;
+  coverage?: Coverage;
   obstructionFactor: number;
   /** ISO date-time of the satellite check. */
   verifiedAt: string;
@@ -43,7 +45,8 @@ export function applyOrientationOverrides(
       ...patio,
       exposure: {
         ...patio.exposure,
-        orientation: override.orientation,
+        orientation: override.orientation ?? patio.exposure.orientation,
+        coverage: override.coverage ?? patio.exposure.coverage,
         obstructionFactor: override.obstructionFactor,
         exposureSource: "satellite-estimated",
         verifiedAt: override.verifiedAt,

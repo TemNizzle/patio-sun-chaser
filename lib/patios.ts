@@ -1,11 +1,14 @@
 import { seedPatios } from "@/data/patios.seed";
+import { barbadosPatios } from "@/data/barbados.seed";
 import type { Patio } from "@/lib/types";
-import { estimateExposure } from "@/lib/sun-exposure";
+import type { CityId, ViewMode } from "@/lib/cities";
+import { DEFAULT_CITY_ID } from "@/lib/cities";
+import { estimateExposure, modeMatchScore } from "@/lib/sun-exposure";
 import { applyOrientationOverrides } from "@/lib/orientation-overrides";
 
 /** Seed data with data/orientations.json merged over it. */
 function allPatios(): Patio[] {
-  return applyOrientationOverrides(seedPatios);
+  return applyOrientationOverrides([...seedPatios, ...barbadosPatios]);
 }
 
 /** Thin data-access layer. Swap the body for a DB query later; callers stay unchanged. */
@@ -13,8 +16,18 @@ export async function getAllPatios(): Promise<Patio[]> {
   return allPatios();
 }
 
-export async function getPatioBySlug(slug: string): Promise<Patio | undefined> {
-  return allPatios().find((p) => p.slug === slug);
+/** Venues for one city. Records with no `city` are the original Toronto set. */
+export async function getPatiosForCity(city: CityId): Promise<Patio[]> {
+  return allPatios().filter((p) => (p.city ?? DEFAULT_CITY_ID) === city);
+}
+
+export async function getPatioBySlug(
+  slug: string,
+  city: CityId = DEFAULT_CITY_ID
+): Promise<Patio | undefined> {
+  return allPatios().find(
+    (p) => p.slug === slug && (p.city ?? DEFAULT_CITY_ID) === city
+  );
 }
 
 export function getNeighborhoods(patios: Patio[]): string[] {
@@ -23,18 +36,18 @@ export function getNeighborhoods(patios: Patio[]): string[] {
 
 /**
  * Default ordering: sponsored patios first (by sponsorRank), then everyone
- * else by current sun confidence, then alphabetically. Pure and testable.
+ * else by how well they match the mode (sunny in "sun", shaded in "shade"),
+ * then alphabetically. Pure and testable.
  * `cloudCoverPercent` is an optional live-weather adjustment (see lib/weather.ts).
  */
 export function sortPatios(
   patios: Patio[],
   at: Date,
-  cloudCoverPercent?: number
+  cloudCoverPercent?: number,
+  mode: ViewMode = "sun"
 ): Patio[] {
-  const confidenceNow = (p: Patio): number => {
-    const r = estimateExposure(p, at, cloudCoverPercent);
-    return r.status === "sunny" ? r.confidence : 0;
-  };
+  const confidenceNow = (p: Patio): number =>
+    modeMatchScore(estimateExposure(p, at, cloudCoverPercent), mode);
 
   return [...patios].sort((a, b) => {
     if (a.sponsored !== b.sponsored) return a.sponsored ? -1 : 1;
