@@ -1,10 +1,18 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Patio } from "@/lib/types";
 import type { WeatherSnapshot } from "@/lib/weather";
 import { estimateExposure, modeMatchScore } from "@/lib/sun-exposure";
-import type { City, ViewMode } from "@/lib/cities";
+import { cityPath, type City, type ViewMode } from "@/lib/cities";
+import { LOCATED_IN_CITY_KM, nearestCity, type LatLng } from "@/lib/geo";
+import {
+  consumeLocateOnLoad,
+  requestLocateOnLoad,
+  setCityCookie,
+} from "@/lib/city-choice";
+import { CitySwitcher } from "@/components/Map/CitySwitcher";
 import { sortPatios, getNeighborhoods } from "@/lib/patios";
 import { PatioMap } from "@/components/Map/PatioMap";
 import { MapHeader } from "@/components/Map/MapHeader";
@@ -68,6 +76,29 @@ export function HomeView({
     locateRef.current = trigger;
   }, []);
 
+  const router = useRouter();
+
+  // "Find me" in another city (e.g. opened on Toronto, standing in Barbados):
+  // the map would fly there but the venues, weather and clock would still be
+  // the wrong city's. Hop to the city the user is actually in, remember it, and
+  // re-run Find me there so the map lands on them.
+  const handleLocated = useCallback(
+    (position: LatLng) => {
+      const { city: here, km } = nearestCity(position);
+      if (here.id === city.id || km > LOCATED_IN_CITY_KM) return;
+      setCityCookie(here.id);
+      requestLocateOnLoad();
+      router.push(cityPath(here.id));
+    },
+    [city.id, router]
+  );
+
+  useEffect(() => {
+    if (!consumeLocateOnLoad()) return;
+    const t = setTimeout(() => locateRef.current?.(), 800);
+    return () => clearTimeout(t);
+  }, []);
+
   const locate = () => {
     setLocateError(null);
     locateRef.current?.();
@@ -86,7 +117,9 @@ export function HomeView({
           onSelect={setSelectedId}
           onLocateReady={handleLocateReady}
           onLocateError={setLocateError}
+          onLocated={handleLocated}
         />
+        <CitySwitcher current={city.id} />
         <MapLegend mode={mode} />
         <button
           onClick={locate}

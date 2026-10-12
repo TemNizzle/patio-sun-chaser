@@ -45,6 +45,14 @@ wording). Toronto stays at `/`; Barbados is at `/barbados`
 - **Rain**: weather includes current precipitation; the weather panel notes it
   and the venue pages say roofed spots stay dry.
 
+**Which city opens.** `proxy.ts` handles `/`: it uses the city the visitor
+picked before (the `psc-city` cookie, set by the city switcher), otherwise the
+nearest city to their coarse IP location (Vercel's `x-vercel-ip-latitude` /
+`x-vercel-ip-longitude` headers, no permission prompt), otherwise Toronto. On
+the map, **Find me** switches to the city you are actually in (within 150 km),
+so venues, weather and the clock match, then re-centers on you. The IP headers
+only exist on Vercel; locally, `/` stays on Toronto.
+
 Add a city: add an entry to `CITIES`, a seed file, and include it in
 `allPatios()` in `lib/patios.ts`.
 

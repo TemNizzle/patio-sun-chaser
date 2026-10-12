@@ -23,6 +23,8 @@ interface Props {
    *  button can drive the Mapbox control. */
   onLocateReady?: (trigger: () => void) => void;
   onLocateError?: (message: string) => void;
+  /** Fires with the user's position each time geolocation succeeds. */
+  onLocated?: (position: { lat: number; lng: number }) => void;
 }
 
 function dotEl(color: string, ring: boolean): HTMLDivElement {
@@ -46,6 +48,7 @@ export function PatioMap({
   onSelect,
   onLocateReady,
   onLocateError,
+  onLocated,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -59,6 +62,11 @@ export function PatioMap({
   useEffect(() => {
     onLocateErrorRef.current = onLocateError;
   }, [onLocateError]);
+
+  const onLocatedRef = useRef(onLocated);
+  useEffect(() => {
+    onLocatedRef.current = onLocated;
+  }, [onLocated]);
 
   // Init map once.
   useEffect(() => {
@@ -102,6 +110,13 @@ export function PatioMap({
     });
     geolocateRef.current = geolocate;
     map.addControl(geolocate);
+
+    geolocate.on("geolocate", (pos: GeolocationPosition) => {
+      onLocatedRef.current?.({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      });
+    });
 
     geolocate.on("error", (err: GeolocationPositionError) => {
       onLocateErrorRef.current?.(
