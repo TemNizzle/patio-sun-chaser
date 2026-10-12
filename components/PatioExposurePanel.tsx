@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
 import { STATUS_META } from "@/lib/format";
+import { patioCity } from "@/lib/cities";
 import { SunTimeControl } from "@/components/DateTimePicker/SunTimeControl";
 
 export function PatioExposurePanel({ patio }: { patio: Patio }) {
@@ -33,6 +34,7 @@ export function PatioExposurePanel({ patio }: { patio: Patio }) {
       </div>
 
       <SunTimeControl
+        timezone={patioCity(patio).timezone}
         value={at}
         onChange={setPreviewAt}
         onReset={() => {

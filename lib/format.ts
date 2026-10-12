@@ -1,7 +1,7 @@
 import { formatInTimeZone } from "date-fns-tz";
 import { estimateSunWindow, type SunStatus } from "@/lib/sun-exposure";
-import type { ExposureProfile, Patio } from "@/lib/types";
-import { TORONTO_TIMEZONE } from "@/lib/constants";
+import type { Coverage, ExposureProfile, Patio } from "@/lib/types";
+import { patioCity } from "@/lib/cities";
 
 /**
  * Status colours describe *how much sun is available*, not how good the patio
@@ -46,8 +46,8 @@ export interface SunWindowDisplay {
  */
 const windowCache = new Map<string, SunWindowDisplay | null>();
 
-function dayKey(date: Date): string {
-  return formatInTimeZone(date, TORONTO_TIMEZONE, "yyyy-MM-dd");
+function dayKey(date: Date, timezone: string): string {
+  return formatInTimeZone(date, timezone, "yyyy-MM-dd");
 }
 
 /**
@@ -62,7 +62,8 @@ export function patioSunWindow(patio: Patio, date: Date): SunWindowDisplay | nul
   );
   if (curated) return { text: curated, isEstimate: false };
 
-  const key = `${patio.id}|${dayKey(date)}`;
+  const timezone = patioCity(patio).timezone;
+  const key = `${patio.city ?? "toronto"}|${patio.id}|${dayKey(date, timezone)}`;
   const cached = windowCache.get(key);
   if (cached !== undefined) return cached;
 
@@ -70,9 +71,9 @@ export function patioSunWindow(patio: Patio, date: Date): SunWindowDisplay | nul
   const computed =
     start && end
       ? {
-          text: `${formatInTimeZone(start, TORONTO_TIMEZONE, "HH:mm")} – ${formatInTimeZone(
+          text: `${formatInTimeZone(start, timezone, "HH:mm")} – ${formatInTimeZone(
             end,
-            TORONTO_TIMEZONE,
+            timezone,
             "HH:mm"
           )}`,
           isEstimate: true,
@@ -111,3 +112,9 @@ export function exposureSourceNote(exposure: ExposureProfile): string | null {
       return null;
   }
 }
+
+export const COVERAGE_LABEL: Record<Coverage, string> = {
+  roofed: "Roofed",
+  partial: "Partly covered",
+  open: "Open air",
+};

@@ -1,7 +1,8 @@
 import { getPosition, getTimes } from "suncalc";
 import { toZonedTime } from "date-fns-tz";
 import type { ExposureSource, Orientation, Patio } from "@/lib/types";
-import { TORONTO_TIMEZONE } from "@/lib/constants";
+import { patioCity } from "@/lib/cities";
+import type { ViewMode } from "@/lib/cities";
 
 /** How much to trust a curated sun window, by where it came from. */
 const CONFIDENCE_BY_SOURCE: Record<ExposureSource, number> = {
@@ -17,7 +18,7 @@ export interface SunSnapshot {
   /** Compass bearing of the sun: 0 = N, 90 = E, 180 = S, 270 = W. */
   azimuthDeg: number;
   isDaytime: boolean;
-  /** Null only at extreme latitudes (polar day/night); never null for Toronto. */
+  /** Null only at extreme latitudes (polar day/night); never null for the cities we cover. */
   sunrise: Date | null;
   sunset: Date | null;
 }
@@ -63,14 +64,17 @@ const ORIENTATION_BEARING: Record<Exclude<Orientation, "OPEN_SKY">, number> = {
 
 const DEFAULT_ARC_WIDTH_DEG = 140;
 
+/** Above this sun altitude, partial overhead cover is assumed to shade the seats. Placeholder until real shadow data exists. */
+const PARTIAL_COVER_BLOCKS_ABOVE_DEG = 60;
+
 function angularDiff(a: number, b: number): number {
   const diff = Math.abs(a - b) % 360;
   return diff > 180 ? 360 - diff : diff;
 }
 
-/** Fractional Toronto-local hour (e.g. 13.5 for 1:30pm), timezone-safe. */
-function torontoLocalHour(date: Date): number {
-  const zoned = toZonedTime(date, TORONTO_TIMEZONE);
+/** Fractional local hour (e.g. 13.5 for 1:30pm) in an IANA timezone, timezone-safe. */
+function localHour(date: Date, timezone: string): number {
+  const zoned = toZonedTime(date, timezone);
   return zoned.getHours() + zoned.getMinutes() / 60;
 }
 
@@ -126,14 +130,34 @@ function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
     return { status: "closed-sky", confidence: 1, reason: "Sun is below the horizon." };
   }
 
-  const { sunStartsAt, sunEndsAt, orientation, obstructionFactor } = patio.exposure;
+  const { sunStartsAt, sunEndsAt, orientation, obstructionFactor, coverage } =
+    patio.exposure;
+
+  // Overhead cover. A roof shades the seating at any sun angle; this is what
+  // matters in the tropics, where the sun is often near the zenith and a
+  // compass orientation tells you little.
+  if (coverage === "roofed") {
+    return {
+      status: "shaded",
+      confidence: CONFIDENCE_BY_SOURCE[patio.exposure.exposureSource],
+      reason: "Roofed: shaded at any sun angle.",
+    };
+  }
+  // An awning or trees block a high sun but let a low one in sideways.
+  if (coverage === "partial" && snap.altitudeDeg >= PARTIAL_COVER_BLOCKS_ABOVE_DEG) {
+    return {
+      status: "shaded",
+      confidence: 0.6,
+      reason: `Partly covered: sun is high (${Math.round(snap.altitudeDeg)}°) so overhead cover shades it.`,
+    };
+  }
 
   // A curated/mock sun window takes priority when present.
   if (sunStartsAt && sunEndsAt) {
-    const localHour = torontoLocalHour(date);
+    const hourNow = localHour(date, patioCity(patio).timezone);
     const from = parseHour(sunStartsAt);
     const to = parseHour(sunEndsAt);
-    const inWindow = localHour >= from && localHour < to;
+    const inWindow = hourNow >= from && hourNow < to;
     const confidence = CONFIDENCE_BY_SOURCE[patio.exposure.exposureSource];
     return {
       status: inWindow ? "sunny" : "shaded",
@@ -141,6 +165,24 @@ function estimateSunPositionExposure(patio: Patio, date: Date): ExposureResult {
       reason: inWindow
         ? `Within curated sun window (${sunStartsAt}–${sunEndsAt}).`
         : `Outside curated sun window (${sunStartsAt}–${sunEndsAt}).`,
+    };
+  }
+
+  // Cover tagged but no compass direction (the usual case in Barbados): with
+  // nothing overhead the seating is in the sun whenever the sun is up; with
+  // partial cover the low sun, below the threshold above, still reaches it.
+  if (!orientation && coverage === "open") {
+    return {
+      status: "sunny",
+      confidence: obstructionFactor,
+      reason: "Open air with nothing overhead.",
+    };
+  }
+  if (!orientation && coverage === "partial") {
+    return {
+      status: "sunny",
+      confidence: 0.4,
+      reason: "Partly covered, but the sun is low enough to reach the seats.",
     };
   }
 
@@ -201,4 +243,14 @@ export function estimateSunWindow(
   }
 
   return { start, end };
+}
+
+/**
+ * How well a result matches what the user is looking for, 0..1. In sun mode a
+ * sunny result scores by its confidence; in shade mode a shaded one does.
+ * Night matches neither.
+ */
+export function modeMatchScore(result: ExposureResult, mode: ViewMode): number {
+  const wanted = mode === "sun" ? "sunny" : "shaded";
+  return result.status === wanted ? result.confidence : 0;
 }

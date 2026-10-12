@@ -250,3 +250,30 @@ citywide expansion is a separate, larger decision (see the performance
 discussion around marker clustering / list virtualization before scaling
 much past this point). `scripts/import-apify.ts` (a stub) sketches the same
 mapping used for the King/Queen batch above for when that happens.
+
+## Barbados (`barbados.seed.ts`)
+
+Bars, restaurants, beach bars and rum shops, with `city: "barbados"`. The file
+starts empty and is generated from an Apify Google Places export:
+
+```bash
+npx tsx scripts/import-apify.ts barbados <export.json> > data/barbados.seed.ts
+```
+
+Search terms worth running: "rum shop", "bar", "beach bar", "restaurant" around
+Bridgetown, Holetown, St. Lawrence Gap, Oistins, Speightstown and Bathsheba.
+Google covers rum shops thinly, so expect to top that category up by hand.
+
+The importer drops rows without coordinates and permanently closed places,
+de-duplicates by `placeId`, keeps slugs unique within the city, and sets
+`neighborhood` to the parish. `exposure` carries no data and is flagged
+`NEEDS EXPOSURE REVIEW`.
+
+### Cover tagging
+
+Open `/admin/orientation?city=barbados` (dev only). Keys `5` / `6` / `7` record
+**Roofed / Partly covered / Open air** on their own and move on, written to
+`data/orientations.json` like orientation entries (an entry may now have
+`coverage`, `orientation`, or both). The compass keys still work for venues where
+direction matters. Judge from satellite imagery and Street View; this is
+`satellite-estimated` until someone confirms it in person.

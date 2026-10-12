@@ -27,6 +27,35 @@ sun will be there, so groups can plan their sun-chasing outings.
   back to the pure sun-position model. See [`lib/weather.ts`](lib/weather.ts).
   The weather button (top-right of the map) shows the current reading.
 
+## Cities and modes
+
+The app serves more than one city from one codebase. Each city is a config entry
+in [`lib/cities.ts`](lib/cities.ts) (coordinates, timezone, default mode, venue
+wording). Toronto stays at `/`; Barbados is at `/barbados`
+(`/barbados/patios/<slug>` for detail pages).
+
+- **Find sun / Find shade** toggle on every city. The exposure model is the same;
+  the mode only changes ranking, the "…now only" filter and wording. Toronto
+  opens in sun mode, Barbados in shade mode.
+- **Overhead cover** (`exposure.coverage`: `roofed` | `partial` | `open`) matters
+  near the equator, where the sun is often overhead and a compass orientation
+  says little. Roofed is shaded at any sun angle; partial cover shades a high
+  sun (above 60°) but not a low one; open air is sunny whenever the sun is up.
+  Records without `coverage` use the original orientation model unchanged.
+- **Rain**: weather includes current precipitation; the weather panel notes it
+  and the venue pages say roofed spots stay dry.
+
+**Which city opens.** `proxy.ts` handles `/`: it uses the city the visitor
+picked before (the `psc-city` cookie, set by the city switcher), otherwise the
+nearest city to their coarse IP location (Vercel's `x-vercel-ip-latitude` /
+`x-vercel-ip-longitude` headers, no permission prompt), otherwise Toronto. On
+the map, **Find me** switches to the city you are actually in (within 150 km),
+so venues, weather and the clock match, then re-centers on you. The IP headers
+only exist on Vercel; locally, `/` stays on Toronto.
+
+Add a city: add an entry to `CITIES`, a seed file, and include it in
+`allPatios()` in `lib/patios.ts`.
+
 ## Getting started
 
 ```bash

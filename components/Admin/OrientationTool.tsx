@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { Orientation, Patio } from "@/lib/types";
+import type { Coverage, Orientation, Patio } from "@/lib/types";
 import type { OrientationOverrides } from "@/lib/orientation-overrides";
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -32,12 +32,21 @@ const TIERS: { key: string; factor: number; label: string; hint: string }[] = [
   { key: "4", factor: 0.3, label: "Heavy", hint: "Narrow gap, enclosed" },
 ];
 
+/** Overhead cover. Keys 5-7 record cover on its own, without a compass direction. */
+const COVERAGE: { key: string; value: Coverage; label: string; hint: string }[] = [
+  { key: "5", value: "roofed", label: "Roofed", hint: "Shaded at any sun angle" },
+  { key: "6", value: "partial", label: "Partly covered", hint: "Awning, trees, pergola" },
+  { key: "7", value: "open", label: "Open air", hint: "Nothing overhead" },
+];
+
 interface Props {
+  /** Default map center when the list is empty. */
+  center?: { lat: number; lng: number };
   patios: Patio[];
   initialOverrides: OrientationOverrides;
 }
 
-export function OrientationTool({ patios, initialOverrides }: Props) {
+export function OrientationTool({ patios, initialOverrides, center }: Props) {
   const [entries, setEntries] = useState<OrientationOverrides>(initialOverrides);
   const [index, setIndex] = useState(() => {
     const first = patios.findIndex((p) => !initialOverrides[p.id]);
@@ -68,22 +77,33 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
     }, 600);
   }, []);
 
-  const record = useCallback(
-    (orientation: Orientation) => {
+  const save = useCallback(
+    (entry: Omit<OrientationOverrides[string], "verifiedAt">) => {
       if (!patio) return;
       const next: OrientationOverrides = {
         ...entries,
-        [patio.id]: {
-          orientation,
-          obstructionFactor: orientation === "OPEN_SKY" ? 0.9 : factor,
-          verifiedAt: new Date().toISOString(),
-        },
+        [patio.id]: { ...entry, verifiedAt: new Date().toISOString() },
       };
       setEntries(next);
       persist(next);
       setIndex((i) => Math.min(i + 1, patios.length - 1));
     },
-    [patio, entries, factor, persist, patios.length]
+    [patio, entries, persist, patios.length]
+  );
+
+  const record = useCallback(
+    (orientation: Orientation) =>
+      save({
+        orientation,
+        obstructionFactor: orientation === "OPEN_SKY" ? 0.9 : factor,
+      }),
+    [save, factor]
+  );
+
+  const recordCoverage = useCallback(
+    (coverage: Coverage) =>
+      save({ coverage, obstructionFactor: coverage === "open" ? 0.9 : factor }),
+    [save, factor]
   );
 
   // Map init. Locked north-up and flat — a rotated or tilted view would make
@@ -94,7 +114,10 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: "mapbox://styles/mapbox/satellite-streets-v12",
-      center: [patios[0]?.lng ?? -79.3832, patios[0]?.lat ?? 43.6532],
+      center: [
+        patios[0]?.lng ?? center?.lng ?? -79.3832,
+        patios[0]?.lat ?? center?.lat ?? 43.6532,
+      ],
       zoom: 18.5,
       bearing: 0,
       pitch: 0,
@@ -107,6 +130,8 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
       map.remove();
       mapRef.current = null;
     };
+  // `center` is only the opening fallback; it must not rebuild the map.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patios]);
 
   useEffect(() => {
@@ -133,6 +158,12 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
         record(dir.value);
         return;
       }
+      const cover = COVERAGE.find((c) => c.key === k);
+      if (cover) {
+        e.preventDefault();
+        recordCoverage(cover.value);
+        return;
+      }
       const tier = TIERS.find((t) => t.key === k);
       if (tier) {
         e.preventDefault();
@@ -150,7 +181,7 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [record, patios.length]);
+  }, [record, recordCoverage, patios.length]);
 
   if (!TOKEN) {
     return (
@@ -210,10 +241,35 @@ export function OrientationTool({ patios, initialOverrides }: Props) {
         {current && (
           <span className="text-sm text-muted">
             Recorded{" "}
-            <strong className="text-foreground">{current.orientation}</strong> at
-            obstruction {current.obstructionFactor}
+            <strong className="text-foreground">
+              {[current.orientation, current.coverage].filter(Boolean).join(" · ")}
+            </strong>{" "}
+            at obstruction {current.obstructionFactor}
           </span>
         )}
+      </div>
+
+      <div>
+        <p className="mb-1.5 text-xs uppercase tracking-wide text-muted">
+          Overhead cover — records on its own and moves on
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {COVERAGE.map((c) => (
+            <button
+              key={c.key}
+              onClick={() => recordCoverage(c.value)}
+              className={`flex items-baseline gap-2 rounded-lg border px-3 py-2 text-left text-sm transition ${
+                current?.coverage === c.value
+                  ? "border-accent bg-accent/15"
+                  : "border-border bg-surface hover:border-accent/60"
+              }`}
+            >
+              <span className="font-mono text-[11px] text-muted">{c.key}</span>
+              <span className="font-semibold text-foreground">{c.label}</span>
+              <span className="text-xs text-muted">{c.hint}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-[auto_1fr]">

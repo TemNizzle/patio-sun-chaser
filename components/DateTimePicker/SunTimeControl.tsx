@@ -1,34 +1,46 @@
 "use client";
 
 import { formatInTimeZone } from "date-fns-tz";
-import { TORONTO_TIMEZONE } from "@/lib/constants";
+import { CITIES, DEFAULT_CITY_ID, type ViewMode } from "@/lib/cities";
 
 interface Props {
   value: Date;
   onChange: (next: Date) => void;
   onReset: () => void;
   isNow: boolean;
+  /** IANA timezone of the city being viewed. Defaults to Toronto. */
+  timezone?: string;
+  mode?: ViewMode;
 }
 
 /**
- * Preview sun exposure at a chosen date/time. All display is in Toronto local
- * time; edits rebuild a Date from the Toronto-local wall-clock the user picked.
+ * Preview sun or shade at a chosen date/time. All display is in the city's
+ * local time; edits rebuild a Date from the wall-clock the user picked.
  */
-export function SunTimeControl({ value, onChange, onReset, isNow }: Props) {
-  const dateStr = formatInTimeZone(value, TORONTO_TIMEZONE, "yyyy-MM-dd");
-  const hour = Number(formatInTimeZone(value, TORONTO_TIMEZONE, "H"));
-  const timeLabel = formatInTimeZone(value, TORONTO_TIMEZONE, "h:mm a");
+export function SunTimeControl({
+  value,
+  onChange,
+  onReset,
+  isNow,
+  timezone = CITIES[DEFAULT_CITY_ID].timezone,
+  mode = "sun",
+}: Props) {
+  const dateStr = formatInTimeZone(value, timezone, "yyyy-MM-dd");
+  const hour = Number(formatInTimeZone(value, timezone, "H"));
+  const timeLabel = formatInTimeZone(value, timezone, "h:mm a");
 
   const rebuild = (nextDate: string, nextHour: number) => {
-    // Construct the instant matching the chosen Toronto wall-clock time.
-    const offset = formatInTimeZone(value, TORONTO_TIMEZONE, "XXX"); // e.g. -04:00
+    // Construct the instant matching the chosen wall-clock time in the city.
+    const offset = formatInTimeZone(value, timezone, "XXX"); // e.g. -04:00
     const hh = String(nextHour).padStart(2, "0");
     onChange(new Date(`${nextDate}T${hh}:00:00${offset}`));
   };
 
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm">
-      <span className="font-semibold text-foreground">Preview sun at</span>
+      <span className="font-semibold text-foreground">
+        {mode === "shade" ? "Preview shade at" : "Preview sun at"}
+      </span>
       <input
         type="date"
         value={dateStr}

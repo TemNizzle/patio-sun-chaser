@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { WeatherSnapshot } from "@/lib/weather";
+import type { City } from "@/lib/cities";
 
 function cloudIcon(cloudCoverPercent: number): string {
   if (cloudCoverPercent > 70) return "☁️";
@@ -18,8 +19,10 @@ function timeLabel(date: Date): string {
 
 export function WeatherButton({
   weather,
+  city,
 }: {
   weather: WeatherSnapshot | null;
+  city: City;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -38,7 +41,7 @@ export function WeatherButton({
       {open && (
         <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-surface/95 p-3 text-sm shadow-lg backdrop-blur">
           <div className="font-semibold text-foreground">
-            {cloudIcon(weather.cloudCoverPercent)} Toronto weather
+            {cloudIcon(weather.cloudCoverPercent)} {city.name} weather
           </div>
           <div className="mt-1 text-muted">
             {Math.round(weather.cloudCoverPercent)}% cloud cover
@@ -46,6 +49,11 @@ export function WeatherButton({
           <div className="text-muted">
             {Math.round(weather.temperatureC)}°C
           </div>
+          {weather.precipitationMm > 0.1 && (
+            <div className="text-muted">
+              ☔ Raining now · roofed spots stay dry
+            </div>
+          )}
           <div className="mt-2 text-xs text-muted">
             As of {timeLabel(weather.observedAt)} · adjusting sunny/partial/
             shaded estimates

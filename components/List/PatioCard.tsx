@@ -3,7 +3,14 @@
 import Link from "next/link";
 import type { Patio } from "@/lib/types";
 import { estimateExposure } from "@/lib/sun-exposure";
-import { STATUS_META, formatHours, patioSunWindow, mapsUrl } from "@/lib/format";
+import {
+  STATUS_META,
+  COVERAGE_LABEL,
+  formatHours,
+  patioSunWindow,
+  mapsUrl,
+} from "@/lib/format";
+import { venuePath, DEFAULT_CITY_ID, type ViewMode } from "@/lib/cities";
 import { SponsoredBadge } from "@/components/Ads/SponsoredBadge";
 
 interface Props {
@@ -12,6 +19,7 @@ interface Props {
   cloudCoverPercent?: number;
   selected?: boolean;
   onSelect?: (id: string) => void;
+  mode?: ViewMode;
 }
 
 export function PatioCard({
@@ -20,11 +28,14 @@ export function PatioCard({
   cloudCoverPercent,
   selected,
   onSelect,
+  mode = "sun",
 }: Props) {
   const exposure = estimateExposure(patio, at, cloudCoverPercent);
   const meta = STATUS_META[exposure.status];
   const hours = formatHours(patio.hours);
   const sunWindow = patioSunWindow(patio, at);
+  // In shade mode the sun window is context, so word it as when the sun reaches the seats.
+  const sunWindowLabel = mode === "shade" ? "In sun" : "Sun";
   const isEstimated = patio.exposure.exposureSource !== "verified";
 
   return (
@@ -38,7 +49,7 @@ export function PatioCard({
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <Link
-              href={`/patios/${patio.slug}`}
+              href={venuePath(patio.city ?? DEFAULT_CITY_ID, patio.slug)}
               onClick={(e) => e.stopPropagation()}
               className="truncate font-semibold text-foreground hover:underline"
             >
@@ -62,6 +73,11 @@ export function PatioCard({
           {isEstimated && (
             <span className="text-[11px] text-muted">Estimated</span>
           )}
+          {patio.exposure.coverage && (
+            <span className="text-[11px] text-muted">
+              {COVERAGE_LABEL[patio.exposure.coverage]}
+            </span>
+          )}
         </div>
       </div>
 
@@ -69,7 +85,7 @@ export function PatioCard({
         {sunWindow && (
           <span className="inline-flex items-center gap-1">
             <span aria-hidden>☀</span>
-            Sun {sunWindow.text}
+            {sunWindowLabel} {sunWindow.text}
           </span>
         )}
         {hours && (
