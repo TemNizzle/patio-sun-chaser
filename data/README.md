@@ -254,22 +254,40 @@ mapping used for the King/Queen batch above for when that happens.
 ## Barbados (`barbados.seed.ts`)
 
 Bars, restaurants, beach bars and rum shops, with `city: "barbados"`. The file
-starts empty and is generated from an Apify Google Places export:
+starts empty and is generated from an Apify Google Places export.
+
+### 1. Run the scrape
+
+In the Apify console, open the **Google Maps Scraper** actor
+(`compass/crawler-google-places`) and paste the contents of
+[`scripts/apify/barbados-input.json`](../scripts/apify/barbados-input.json) into
+the JSON input tab. It runs 48 searches (rum shop, bar, beach bar, restaurant
+across 12 areas: Bridgetown, Holetown, St. Lawrence Gap, Oistins, Speightstown,
+Bathsheba, Hastings, Worthing, Bottom Bay, Silver Sands, Crane, Six Cross Roads)
+at up to 60 places each, so at most ~2,900 results before de-duplication. Apify
+bills per place scraped, so check the actor's current price and set a spend limit
+on the run. Reduce `maxCrawledPlacesPerSearch` or trim the searches to spend less.
+
+Download the dataset as JSON.
+
+### 2. Import
 
 ```bash
 npx tsx scripts/import-apify.ts barbados <export.json> > data/barbados.seed.ts
 ```
 
-Search terms worth running: "rum shop", "bar", "beach bar", "restaurant" around
-Bridgetown, Holetown, St. Lawrence Gap, Oistins, Speightstown and Bathsheba.
-Google covers rum shops thinly, so expect to top that category up by hand.
-
-The importer drops rows without coordinates and permanently closed places,
-de-duplicates by `placeId`, keeps slugs unique within the city, and sets
-`neighborhood` to the parish. `exposure` carries no data and is flagged
+It prints a summary to stderr (read, kept, and why rows were dropped). It drops
+rows without coordinates, permanently closed places, other countries, and
+anything that is not a bar, restaurant, cafe, brewery, rum shop or beach bar
+(pass `--keep-other` to keep those). It collapses the same venue listed twice
+within 75 m, keeps slugs unique, sets `neighborhood` to the parish (from Apify's
+`state` field, falling back to the address), and normalizes opening hours to one
+`HH:mm-HH:mm` range. `exposure` carries no data and is flagged
 `NEEDS EXPOSURE REVIEW`.
 
-### Cover tagging
+Google covers rum shops thinly, so expect to top that category up by hand.
+
+### 3. Tag cover
 
 Open `/admin/orientation?city=barbados` (dev only). Keys `5` / `6` / `7` record
 **Roofed / Partly covered / Open air** on their own and move on, written to
